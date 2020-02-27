@@ -12,6 +12,7 @@ void SetupPanel::initControls()
     layout->addWidget(getSourcePanel());
     layout->addWidget(getTargetPanel());
     layout->addWidget(getResumeFromLastPositionCheckBox());
+    layout->addWidget(getButtonPanel());
 }
 
 void SetupPanel::initPanel()
@@ -21,12 +22,21 @@ void SetupPanel::initPanel()
     initControls();
 }
 
-SetupPanel::SetupPanel(QWidget *parent)
+SetupPanel::SetupPanel(QWidget *parent, FileCopierModel &refSetupModel)
     :   QWidget(parent)
+    ,   mRefSetupModel(refSetupModel)
 { }
 
-SetupPanel::~SetupPanel()
-{ }
+SetupButtonPanel *SetupPanel::getButtonPanel()
+{
+    if(mPnlButtons == nullptr)
+        mPnlButtons = new SetupButtonPanel(this, )
+}
+
+FileCopierModel &SetupPanel::getModel() const
+{
+    return(mRefSetupModel);
+}
 
 QCheckBox *SetupPanel::getResumeFromLastPositionCheckBox()
 {
@@ -36,12 +46,18 @@ QCheckBox *SetupPanel::getResumeFromLastPositionCheckBox()
     return(mChkResumeFromLastPosition);
 }
 
-SourcePanel *SetupPanel::getSourcePanel() const
+SourcePanel *SetupPanel::getSourcePanel()
 {
-    return(const_cast<SourcePanel *>(mPnlSource));
+    if(mPnlSource == nullptr)
+        mPnlSource = new SourcePanel(this, getModel().getSourcePanelModel());
+
+    return(mPnlSource);
 }
 
-TargetPanel *SetupPanel::getTargetPanel() const
+TargetPanel *SetupPanel::getTargetPanel()
 {
-    return(const_cast<TargetPanel *>(mPnlTarget));
+    if(mPnlTarget == nullptr)
+        mPnlTarget = new TargetPanel(this, getModel().getTargetPanelModel());
+
+    return(mPnlTarget);
 }

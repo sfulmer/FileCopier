@@ -27,7 +27,7 @@ namespace net
                     void initControls();
                     void initPanel();
                 public:
-                    explicit TargetPanel(QWidget *parent, TargetPanelModel &refModel);
+                    TargetPanel(QWidget *parent, TargetPanelModel &refModel);
 
                     QPushButton *getBrowseButton();
                     TargetPanelModel &getModel() const;

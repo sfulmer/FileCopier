@@ -1,9 +1,13 @@
 #pragma once
 
+#include "FileCopierModel.h"
 #include <QCheckBox>
 #include <QWidget>
+#include "SetupButtonPanel.h"
 #include "SourcePanel.h"
 #include "TargetPanel.h"
+
+using namespace net::draconia::FileCopier::model;
 
 namespace net
 {
@@ -17,19 +21,22 @@ namespace net
                 {
                     Q_OBJECT
 
+                    FileCopierModel &mRefSetupModel;
                     QCheckBox *mChkResumeFromLastPosition;
+                    SetupButtonPanel *mPnlButtons;
                     SourcePanel *mPnlSource;
                     TargetPanel *mPnlTarget;
                 protected:
                     void initControls();
                     void initPanel();
                 public:
-                    explicit SetupPanel(QWidget *parent = nullptr);
-                    ~SetupPanel();
+                    SetupPanel(QWidget *parent, FileCopierModel &refSetupModel);
 
+                    SetupButtonPanel *getButtonPanel();
+                    FileCopierModel &getModel() const;
                     QCheckBox *getResumeFromLastPositionCheckBox();
-                    SourcePanel *getSourcePanel() const;
-                    TargetPanel *getTargetPanel() const;
+                    SourcePanel *getSourcePanel();
+                    TargetPanel *getTargetPanel();
                 signals:
 
                 };

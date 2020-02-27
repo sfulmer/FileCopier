@@ -1,28 +1,34 @@
 #include "FileCopierModel.h"
 
+using net::draconia::FileCopier::FileCopierController;
 using namespace net::draconia::FileCopier::model;
 
-FileCopierModel::FileCopierModel()
+FileCopierModel::FileCopierModel(FileCopierController &refController)
     :   Observable()
     ,   mbRestartFromLastPosition(true)
-    ,   mObjStatus(Status::SETUP)
+    ,   mRefController(refController)
 { }
 
-FileCopierModel::FileCopierModel(const SourcePanelModel &refSourceModel, const TargetPanelModel &refTargetModel)
+FileCopierModel::FileCopierModel(FileCopierController &refController, const SourcePanelModel &refSourceModel, const TargetPanelModel &refTargetModel)
     :   Observable()
     ,   mbRestartFromLastPosition(true)
+    ,   mRefController(refController)
     ,   mObjSourcePanelModel(refSourceModel)
-    ,   mObjStatus(Status::SETUP)
     ,   mObjTargetPanelModel(refTargetModel)
 { }
 
 FileCopierModel::FileCopierModel(const FileCopierModel &refCopy)
     :   Observable(refCopy)
     ,   mbRestartFromLastPosition(refCopy.getRestartFromLastPosition())
+    ,   mRefController(refCopy.getController())
     ,   mObjSourcePanelModel(refCopy.getSourcePanelModel())
-    ,   mObjStatus(refCopy.getStatus())
     ,   mObjTargetPanelModel(refCopy.getTargetPanelModel())
 { }
+
+FileCopierController &FileCopierModel::getController() const
+{
+    return(const_cast<FileCopierController &>(mRefController));
+}
 
 bool FileCopierModel::getRestartFromLastPosition() const
 {
@@ -32,11 +38,6 @@ bool FileCopierModel::getRestartFromLastPosition() const
 SourcePanelModel &FileCopierModel::getSourcePanelModel() const
 {
     return(const_cast<SourcePanelModel &>(mObjSourcePanelModel));
-}
-
-FileCopierModel::Status &FileCopierModel::getStatus() const
-{
-    return(const_cast<FileCopierModel::Status &>(mObjStatus));
 }
 
 TargetPanelModel &FileCopierModel::getTargetPanelModel() const
@@ -50,11 +51,4 @@ void FileCopierModel::setRestartFromLastPosition(const bool bRestartFromLastPosi
 
     setChanged();
     notifyObservers("RestartFromLastPosition");
-}
-void FileCopierModel::setStatus(const Status &refStatus)
-{
-    mObjStatus = refStatus;
-
-    setChanged();
-    notifyObservers("Status");
 }

@@ -1,9 +1,9 @@
 #pragma once
 
 #include "FileCopierController.h"
-#include <QMainWindow>
-#include <QSplitter>
-#include "SetupPanel.h"
+#include <QPushButton>
+#include <QWidget>
+
 
 namespace net
 {
@@ -13,24 +13,23 @@ namespace net
         {
             namespace ui
             {
-                class FileCopierMainWindow : public QMainWindow
+                class SetupButtonPanel : public QWidget
                 {
                     Q_OBJECT
 
                     FileCopierController &mRefController;
-                    QSplitter *mPnlSplitter;
-                    SetupPanel *mPnlSetup;
+                    QPushButton *mBtnExit, *mBtnStart;
                 protected:
                     void initControls();
                     void initPanel();
                 public:
-                    FileCopierMainWindow(QWidget *parent, FileCopierController &refController);
-                    ~FileCopierMainWindow();
+                    SetupButtonPanel(QWidget *parent, FileCopierController &refController);
 
                     FileCopierController &getController() const;
-                    void getProcessPanel();
-                    SetupPanel *getSetupPanel();
-                    QSplitter *getSplitterPanel();
+                    QPushButton *getExitButton();
+                    QPushButton *getStartButton();
+                signals:
+
                 };
             }
         }

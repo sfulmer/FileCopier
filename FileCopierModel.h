@@ -1,11 +1,10 @@
 #pragma once
 
+#include "FileCopierController.h"
 #include "SourcePanelModel.h"
 #include "TargetPanelModel.h"
-#include <vector>
 
 using namespace  net::draconia::util;
-using namespace std;
 
 namespace net
 {
@@ -18,13 +17,15 @@ namespace net
                 class FileCopierModel : public Observable
                 {
                     bool mbRestartFromLastPosition;
+                    FileCopierController &mRefController;
                     SourcePanelModel mObjSourcePanelModel;
                     TargetPanelModel mObjTargetPanelModel;
                 public:
-                    FileCopierModel();
-                    FileCopierModel(const SourcePanelModel &refSourceModel, const TargetPanelModel &refTargetModel);
+                    FileCopierModel(FileCopierController &refController);
+                    FileCopierModel(FileCopierController &refController, const SourcePanelModel &refSourceModel, const TargetPanelModel &refTargetModel);
                     FileCopierModel(const FileCopierModel &refCopy);
 
+                    FileCopierController &getController() const;
                     bool getRestartFromLastPosition() const;
                     SourcePanelModel &getSourcePanelModel() const;
                     TargetPanelModel &getTargetPanelModel() const;

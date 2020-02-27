@@ -16,12 +16,14 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    FileCopierController.cpp \
     FileCopierModel.cpp \
     Observer.cpp \
     ProcessButtonPanel.cpp \
     ProcessFilenamePanel.cpp \
     ProcessModel.cpp \
     ProcessPanel.cpp \
+    SetupButtonPanel.cpp \
     SetupPanel.cpp \
     SourcePanel.cpp \
     SourcePanelModel.cpp \
@@ -31,6 +33,7 @@ SOURCES += \
     FileCopierMainWindow.cpp
 
 HEADERS += \
+    FileCopierController.h \
     FileCopierMainWindow.h \
     FileCopierModel.h \
     Observer.h \
@@ -38,6 +41,7 @@ HEADERS += \
     ProcessFilenamePanel.h \
     ProcessModel.h \
     ProcessPanel.h \
+    SetupButtonPanel.h \
     SetupPanel.h \
     SourcePanel.h \
     SourcePanelModel.h \

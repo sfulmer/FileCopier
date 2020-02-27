@@ -1,5 +1,6 @@
 #pragma once
 
+#include "FileCopierController.h"
 #include "Observer.h"
 #include <QDir>
 #include <QFileInfo>
@@ -36,6 +37,7 @@ namespace net
                         const static Status STALLED;
                     };
                 private:
+                    FileCopierController &mRefController;
                     long mlCurrentPosition;
                     QDir mDirCurrent;
                     QFile mObjCurrentFile;
@@ -44,14 +46,15 @@ namespace net
                 protected:
                     QMap<QDir, QList<QFile>> &getFiles() const;
                 public:
-                    ProcessModel();
-                    ProcessModel(const QDir &dirCurrent);
-                    ProcessModel(const QFile &objFile);
-                    ProcessModel(const QFileInfo &objFile);
-                    ProcessModel(const QString &sFilename);
+                    ProcessModel(FileCopierController &refController);
+                    ProcessModel(FileCopierController &refController, const QDir &dirCurrent);
+                    ProcessModel(FileCopierController &refController, const QFile &objFile);
+                    ProcessModel(FileCopierController &refController, const QFileInfo &objFile);
+                    ProcessModel(FileCopierController &refController, const QString &sFilename);
                     ProcessModel(const ProcessModel &refCopy);
 
                     void addDirectory(const QDir &refDirectory, const QList<QFile> &lstFiles);
+                    FileCopierController &getController() const;
                     QDir &getCurrentDirectory() const;
                     QFile &getCurrentFile() const;
                     long &getCurrentPosition() const;

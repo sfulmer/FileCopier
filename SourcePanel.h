@@ -23,7 +23,6 @@ namespace net
                     QLabel *mLblSource;
                     QLineEdit *mTxtSource;
                     QPushButton *mBtnBrowse;
-
                     SourcePanelModel &mObjModel;
                 protected:
                     void initControls();

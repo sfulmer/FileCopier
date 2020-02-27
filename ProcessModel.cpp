@@ -1,5 +1,6 @@
 #include "ProcessModel.h"
 
+using net::draconia::FileCopier::FileCopierController;
 using namespace net::draconia::FileCopier::model;
 
 ProcessModel::Status::Status()
@@ -29,14 +30,16 @@ QMap<QDir, QList<QFile>> &ProcessModel::getFiles() const
     return(const_cast<QMap<QDir, QList<QFile>> &>(mMapFiles));
 }
 
-ProcessModel::ProcessModel()
+ProcessModel::ProcessModel(FileCopierController &refController)
     :   Observable()
+    ,   mRefController(refController)
     ,   mlCurrentPosition(-1)
     ,   mObjStatus(Status::SETUP)
 { }
 
-ProcessModel::ProcessModel(const QDir &dirCurrent)
+ProcessModel::ProcessModel(FileCopierController &refController, const QDir &dirCurrent)
     :   Observable()
+    ,   mRefController(refController)
     ,   mlCurrentPosition(-1)
     ,   mDirCurrent(dirCurrent)
     ,   mObjStatus(Status::SETUP)
@@ -45,22 +48,25 @@ ProcessModel::ProcessModel(const QDir &dirCurrent)
 }
 
 
-ProcessModel::ProcessModel(const QFile &objFile)
+ProcessModel::ProcessModel(FileCopierController &refController, const QFile &objFile)
     :   Observable()
+    ,   mRefController(refController)
     ,   mlCurrentPosition(-1)
     ,   mObjCurrentFile(objFile.fileName())
     ,   mObjStatus(Status::SETUP)
 { }
 
-ProcessModel::ProcessModel(const QFileInfo &objFile)
+ProcessModel::ProcessModel(FileCopierController &refController, const QFileInfo &objFile)
     :   Observable()
+    ,   mRefController(refController)
     ,   mlCurrentPosition(-1)
     ,   mObjCurrentFile(objFile.fileName())
     ,   mObjStatus(Status::SETUP)
 { }
 
-ProcessModel::ProcessModel(const QString &sFilename)
+ProcessModel::ProcessModel(FileCopierController &refController, const QString &sFilename)
     :   Observable()
+    ,   mRefController(refController)
     ,   mlCurrentPosition(-1)
     ,   mObjCurrentFile(sFilename)
     ,   mObjStatus(Status::SETUP)
@@ -68,6 +74,7 @@ ProcessModel::ProcessModel(const QString &sFilename)
 
 ProcessModel::ProcessModel(const ProcessModel &refCopy)
     :   Observable(refCopy)
+    ,   mRefController(refCopy.getController())
     ,   mlCurrentPosition(refCopy.getCurrentPosition())
     ,   mDirCurrent(refCopy.getCurrentDirectory())
     ,   mObjCurrentFile(refCopy.getCurrentFile().fileName())
@@ -80,6 +87,11 @@ void ProcessModel::addDirectory(const QDir &refDirectory, const QList<QFile> &ls
 
     setChanged();
     notifyObservers("Directory");
+}
+
+FileCopierController &ProcessModel::getController() const
+{
+    return(const_cast<FileCopierController &>(mRefController));
 }
 
 QDir &ProcessModel::getCurrentDirectory() const
@@ -146,7 +158,7 @@ void ProcessModel::setCurrentFile(const QFile &objFile)
 
 void ProcessModel::setCurrentFile(const QString &sFile)
 {
-    mObjCurrentFile = QFile(sFile);
+    mObjCurrentFile.setFileName(sFile);
 
     setChanged();
     notifyObservers("CurrentFile");
