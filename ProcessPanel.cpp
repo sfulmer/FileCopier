@@ -1,10 +1,17 @@
 #include "ProcessPanel.h"
+#include <QVBoxLayout>
 
 using namespace net::draconia::FileCopier::ui;
 
 void ProcessPanel::initControls()
 {
+    QLayout *layout = new QVBoxLayout(this);
 
+    setLayout(layout);
+
+    layout->addWidget(getFilenamePanel());
+    layout->addWidget(getProgressBar());
+    layout->addWidget(getButtonPanel());
 }
 
 void ProcessPanel::initPanel()
@@ -14,60 +21,39 @@ void ProcessPanel::initPanel()
 
 ProcessPanel::ProcessPanel(QWidget *parent)
     :   QWidget(parent)
-    ,   mObjProcessModel(nullptr)
-    ,   mLblFile(nullptr)
-    ,   mLblFilename(nullptr)
+    ,   mPtrFileCopierModel(nullptr)
+    ,   mPnlButtons(nullptr)
+    ,   mPnlFilename(nullptr)
     ,   mBarProgress(nullptr)
-    ,   mBtnCancel(nullptr)
-    ,   mBtnPauseResume(nullptr)
 { }
 
 ProcessPanel::ProcessPanel(QWidget *parent, FileCopierModel &refModel)
     :   QWidget(parent)
-    ,   mObjFileCopierModel(refModel)
-    ,   mObjProcessModel(nullptr)
-    ,   mLblFile(nullptr)
-    ,   mLblFilename(nullptr)
+    ,   mPtrFileCopierModel(&refModel)
+    ,   mPnlButtons(nullptr)
+    ,   mPnlFilename(nullptr)
     ,   mBarProgress(nullptr)
-    ,   mBtnCancel(nullptr)
-    ,   mBtnPauseResume(nullptr)
 { }
 
-QPushButton *ProcessPanel::getCancelButton()
+ProcessButtonPanel *ProcessPanel::getButtonPanel()
 {
-    if(mBtnCancel == nullptr)
-        mBtnCancel = new QPushButton("&Cancel...", this);
+    if(mPnlButtons == nullptr)
+        mPnlButtons = new ProcessButtonPanel(this, getProcessModel());
 
-    return(mBtnCancel);
+    return(mPnlButtons);
 }
 
 const FileCopierModel &ProcessPanel::getFileCopierModel() const
 {
-    return(mObjFileCopierModel);
+    return(*mPtrFileCopierModel);
 }
 
-QLabel *ProcessPanel::getFileLabel()
+ProcessFilenamePanel *ProcessPanel::getFilenamePanel()
 {
-    if(mLblFile == nullptr)
-        mLblFile = new QLabel("File:");
+    if(mPnlFilename == nullptr)
+        mPnlFilename = new ProcessFilenamePanel(this, getProcessModel());
 
-    return(mLblFile);
-}
-
-QLabel *ProcessPanel::getFilenameLabel()
-{
-    if(mLblFilename == nullptr)
-        mLblFilename = new QLabel(this);
-
-    return(mLblFilename);
-}
-
-QPushButton *ProcessPanel::getPauseResumeButton()
-{
-    if(mBtnPauseResume == nullptr)
-        mBtnPauseResume = new QPushButton("Start");
-
-    return(mBtnPauseResume);
+    return(mPnlFilename);
 }
 
 ProcessModel &ProcessPanel::getProcessModel()

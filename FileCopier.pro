@@ -18,6 +18,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     FileCopierModel.cpp \
     Observer.cpp \
+    ProcessButtonPanel.cpp \
+    ProcessFilenamePanel.cpp \
     ProcessModel.cpp \
     ProcessPanel.cpp \
     SetupPanel.cpp \
@@ -32,6 +34,8 @@ HEADERS += \
     FileCopierMainWindow.h \
     FileCopierModel.h \
     Observer.h \
+    ProcessButtonPanel.h \
+    ProcessFilenamePanel.h \
     ProcessModel.h \
     ProcessPanel.h \
     SetupPanel.h \

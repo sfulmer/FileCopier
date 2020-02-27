@@ -1,10 +1,12 @@
 #pragma once
 
 #include "FileCopierModel.h"
+#include "ProcessButtonPanel.h"
 #include "ProcessModel.h"
-#include <QLabel>
+#include "ProcessFilenamePanel.h"
 #include <QProgressBar>
 #include <QPushButton>
+#include <QSharedPointer>
 #include <QWidget>
 
 using namespace net::draconia::FileCopier::model;
@@ -21,11 +23,11 @@ namespace net
                 {
                     Q_OBJECT
 
-                    FileCopierModel mObjFileCopierModel;
+                    QSharedPointer<FileCopierModel> mPtrFileCopierModel;
+                    ProcessButtonPanel *mPnlButtons;
+                    ProcessFilenamePanel *mPnlFilename;
                     ProcessModel mObjProcessModel;
-                    QLabel *mLblFile, *mLblFilename;
                     QProgressBar *mBarProgress;
-                    QPushButton *mBtnCancel, *mBtnPauseResume;
                 protected:
                     void initControls();
                     void initPanel();
@@ -33,11 +35,9 @@ namespace net
                     explicit ProcessPanel(QWidget *parent = nullptr);
                     ProcessPanel(QWidget *parent, FileCopierModel &refModel);
 
-                    QPushButton *getCancelButton();
+                    ProcessButtonPanel *getButtonPanel();
                     const FileCopierModel &getFileCopierModel() const;
-                    QLabel *getFileLabel();
-                    QLabel *getFilenameLabel();
-                    QPushButton *getPauseResumeButton();
+                    ProcessFilenamePanel *getFilenamePanel();
                     ProcessModel &getProcessModel();
                     QProgressBar *getProgressBar();
                 signals:
