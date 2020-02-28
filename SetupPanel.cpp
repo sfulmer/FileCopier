@@ -22,18 +22,20 @@ void SetupPanel::initPanel()
     initControls();
 }
 
-SetupPanel::SetupPanel(QWidget *parent, FileCopierModel &refSetupModel)
+SetupPanel::SetupPanel(QWidget *parent, SetupModel &refModel)
     :   QWidget(parent)
-    ,   mRefSetupModel(refSetupModel)
+    ,   mRefSetupModel(refModel)
 { }
 
 SetupButtonPanel *SetupPanel::getButtonPanel()
 {
     if(mPnlButtons == nullptr)
-        mPnlButtons = new SetupButtonPanel(this, )
+        mPnlButtons = new SetupButtonPanel(this, getModel().getController());
+
+    return(mPnlButtons);
 }
 
-FileCopierModel &SetupPanel::getModel() const
+SetupModel &SetupPanel::getModel() const
 {
     return(mRefSetupModel);
 }

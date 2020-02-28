@@ -18,20 +18,17 @@ namespace net
                 {
                     Q_OBJECT
 
-                    QSharedPointer<ProcessModel> mPtrProcessModel;
+                    ProcessModel &mRefProcessModel;
                     QLabel *mLblFile, *mLblFilename;
                 protected:
                     void initControls();
                     void initPanel();
                 public:
-                    explicit ProcessFilenamePanel(QWidget *parent = nullptr);
                     ProcessFilenamePanel(QWidget *parent, const ProcessModel &refModel);
-                    ~ProcessFilenamePanel();
 
                     QLabel *getFileLabel();
                     QLabel *getFilenameLabel();
                     ProcessModel &getProcessModel();
-                    void setProcessModel(const ProcessModel &refModel);
                 signals:
 
                 };

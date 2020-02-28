@@ -1,11 +1,10 @@
-#include "FileCopierMainWindow.h"
+#include "FileCopierApp.h"
 
-#include <QApplication>
+using net::draconia::FileCopierApp;
 
 int main(int argc, char *argv[])
 {
-    QApplication a(argc, argv);
-    FileCopierMainWindow w;
-    w.show();
-    return a.exec();
+    FileCopierApp a(argc, argv);
+
+    return(a.exec());
 }

@@ -17,23 +17,20 @@ void ProcessPanel::initControls()
 void ProcessPanel::initPanel()
 {
     setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding));
+
+    initControls();
 }
 
-ProcessPanel::ProcessPanel(QWidget *parent)
+ProcessPanel::ProcessPanel(QWidget *parent, SetupModel &refSetupModel)
     :   QWidget(parent)
-    ,   mPtrFileCopierModel(nullptr)
     ,   mPnlButtons(nullptr)
     ,   mPnlFilename(nullptr)
+    ,   mObjProcessModel(refSetupModel.getController())
     ,   mBarProgress(nullptr)
-{ }
-
-ProcessPanel::ProcessPanel(QWidget *parent, FileCopierModel &refModel)
-    :   QWidget(parent)
-    ,   mPtrFileCopierModel(&refModel)
-    ,   mPnlButtons(nullptr)
-    ,   mPnlFilename(nullptr)
-    ,   mBarProgress(nullptr)
-{ }
+    ,   mRefSetupModel(refSetupModel)
+{
+    initPanel();
+}
 
 ProcessButtonPanel *ProcessPanel::getButtonPanel()
 {
@@ -41,11 +38,6 @@ ProcessButtonPanel *ProcessPanel::getButtonPanel()
         mPnlButtons = new ProcessButtonPanel(this, getProcessModel());
 
     return(mPnlButtons);
-}
-
-const FileCopierModel &ProcessPanel::getFileCopierModel() const
-{
-    return(*mPtrFileCopierModel);
 }
 
 ProcessFilenamePanel *ProcessPanel::getFilenamePanel()
@@ -67,4 +59,9 @@ QProgressBar *ProcessPanel::getProgressBar()
         mBarProgress = new QProgressBar(this);
 
     return(mBarProgress);
+}
+
+const SetupModel &ProcessPanel::getSetupModel() const
+{
+    return(mRefSetupModel);
 }

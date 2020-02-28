@@ -22,15 +22,14 @@ namespace net
             class Observable
             {
                 bool mbChanged;
-                vector<Observer> mLstObservers;
+                vector<Observer *> mLstObservers;
             protected:
                 void notifyObservers(const QString &sProperty);
                 void setChanged(const bool bChanged = true);
             public:
                 Observable();
-                ~Observable();
 
-                const vector<Observer> &getObservers() const;
+                const vector<Observer *> &getObservers() const;
                 bool isChanged() const;
             };
         }

@@ -2,10 +2,10 @@
 
 using namespace net::draconia::util;
 
-void Observable::notifyObservers(const void *objArg)
+void Observable::notifyObservers(const QString &sProperty)
 {
-    for(Observer &objObserver : mLstObservers)
-        objObserver.update(*this, objArg);
+    for(Observer *ptrObserver : mLstObservers)
+        ptrObserver->update(*this, sProperty);
 
     setChanged(false);
 }
@@ -19,10 +19,7 @@ Observable::Observable()
     :   mbChanged(false)
 { }
 
-Observable::~Observable()
-{ }
-
-const vector<Observer> &Observable::getObservers() const
+const vector<Observer *> &Observable::getObservers() const
 {
     return(mLstObservers);
 }

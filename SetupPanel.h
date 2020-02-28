@@ -1,9 +1,9 @@
 #pragma once
 
-#include "FileCopierModel.h"
 #include <QCheckBox>
 #include <QWidget>
 #include "SetupButtonPanel.h"
+#include "SetupModel.h"
 #include "SourcePanel.h"
 #include "TargetPanel.h"
 
@@ -21,7 +21,7 @@ namespace net
                 {
                     Q_OBJECT
 
-                    FileCopierModel &mRefSetupModel;
+                    SetupModel &mRefSetupModel;
                     QCheckBox *mChkResumeFromLastPosition;
                     SetupButtonPanel *mPnlButtons;
                     SourcePanel *mPnlSource;
@@ -30,10 +30,10 @@ namespace net
                     void initControls();
                     void initPanel();
                 public:
-                    SetupPanel(QWidget *parent, FileCopierModel &refSetupModel);
+                    SetupPanel(QWidget *parent, SetupModel &refSetupModel);
 
                     SetupButtonPanel *getButtonPanel();
-                    FileCopierModel &getModel() const;
+                    SetupModel &getModel() const;
                     QCheckBox *getResumeFromLastPositionCheckBox();
                     SourcePanel *getSourcePanel();
                     TargetPanel *getTargetPanel();

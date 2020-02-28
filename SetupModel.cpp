@@ -1,15 +1,15 @@
-#include "FileCopierModel.h"
+#include "SetupModel.h"
 
 using net::draconia::FileCopier::FileCopierController;
 using namespace net::draconia::FileCopier::model;
 
-FileCopierModel::FileCopierModel(FileCopierController &refController)
+SetupModel::SetupModel(FileCopierController &refController)
     :   Observable()
     ,   mbRestartFromLastPosition(true)
     ,   mRefController(refController)
 { }
 
-FileCopierModel::FileCopierModel(FileCopierController &refController, const SourcePanelModel &refSourceModel, const TargetPanelModel &refTargetModel)
+SetupModel::SetupModel(FileCopierController &refController, const SourcePanelModel &refSourceModel, const TargetPanelModel &refTargetModel)
     :   Observable()
     ,   mbRestartFromLastPosition(true)
     ,   mRefController(refController)
@@ -17,7 +17,7 @@ FileCopierModel::FileCopierModel(FileCopierController &refController, const Sour
     ,   mObjTargetPanelModel(refTargetModel)
 { }
 
-FileCopierModel::FileCopierModel(const FileCopierModel &refCopy)
+SetupModel::SetupModel(const SetupModel &refCopy)
     :   Observable(refCopy)
     ,   mbRestartFromLastPosition(refCopy.getRestartFromLastPosition())
     ,   mRefController(refCopy.getController())
@@ -25,27 +25,27 @@ FileCopierModel::FileCopierModel(const FileCopierModel &refCopy)
     ,   mObjTargetPanelModel(refCopy.getTargetPanelModel())
 { }
 
-FileCopierController &FileCopierModel::getController() const
+FileCopierController &SetupModel::getController() const
 {
     return(const_cast<FileCopierController &>(mRefController));
 }
 
-bool FileCopierModel::getRestartFromLastPosition() const
+bool SetupModel::getRestartFromLastPosition() const
 {
     return(mbRestartFromLastPosition);
 }
 
-SourcePanelModel &FileCopierModel::getSourcePanelModel() const
+SourcePanelModel &SetupModel::getSourcePanelModel() const
 {
     return(const_cast<SourcePanelModel &>(mObjSourcePanelModel));
 }
 
-TargetPanelModel &FileCopierModel::getTargetPanelModel() const
+TargetPanelModel &SetupModel::getTargetPanelModel() const
 {
     return(const_cast<TargetPanelModel &>(mObjTargetPanelModel));
 }
 
-void FileCopierModel::setRestartFromLastPosition(const bool bRestartFromLastPosition)
+void SetupModel::setRestartFromLastPosition(const bool bRestartFromLastPosition)
 {
     mbRestartFromLastPosition = bRestartFromLastPosition;
 

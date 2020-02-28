@@ -25,9 +25,9 @@ const static ProcessModel::Status PAUSED("Paused");
 const static ProcessModel::Status SETUP("Setup");
 const static ProcessModel::Status STALLED("Stalled");
 
-QMap<QDir, QList<QFile>> &ProcessModel::getFiles() const
+QMap<QString, QList<QString>> &ProcessModel::getFiles() const
 {
-    return(const_cast<QMap<QDir, QList<QFile>> &>(mMapFiles));
+    return(const_cast<QMap<QString, QList<QString>> &>(mMapFiles));
 }
 
 ProcessModel::ProcessModel(FileCopierController &refController)
@@ -37,56 +37,36 @@ ProcessModel::ProcessModel(FileCopierController &refController)
     ,   mObjStatus(Status::SETUP)
 { }
 
-ProcessModel::ProcessModel(FileCopierController &refController, const QDir &dirCurrent)
-    :   Observable()
-    ,   mRefController(refController)
-    ,   mlCurrentPosition(-1)
-    ,   mDirCurrent(dirCurrent)
-    ,   mObjStatus(Status::SETUP)
-{
-    // TODO Iterate the files/folders in dirCurrent
-}
-
-
-ProcessModel::ProcessModel(FileCopierController &refController, const QFile &objFile)
-    :   Observable()
-    ,   mRefController(refController)
-    ,   mlCurrentPosition(-1)
-    ,   mObjCurrentFile(objFile.fileName())
-    ,   mObjStatus(Status::SETUP)
-{ }
-
-ProcessModel::ProcessModel(FileCopierController &refController, const QFileInfo &objFile)
-    :   Observable()
-    ,   mRefController(refController)
-    ,   mlCurrentPosition(-1)
-    ,   mObjCurrentFile(objFile.fileName())
-    ,   mObjStatus(Status::SETUP)
-{ }
-
 ProcessModel::ProcessModel(FileCopierController &refController, const QString &sFilename)
     :   Observable()
     ,   mRefController(refController)
     ,   mlCurrentPosition(-1)
-    ,   mObjCurrentFile(sFilename)
+    ,   msCurrentFile(sFilename)
     ,   mObjStatus(Status::SETUP)
-{ }
+{
+    //TODO Put code to extract the directory/path from the filename string when viewed as a file object
+}
 
 ProcessModel::ProcessModel(const ProcessModel &refCopy)
     :   Observable(refCopy)
     ,   mRefController(refCopy.getController())
     ,   mlCurrentPosition(refCopy.getCurrentPosition())
-    ,   mDirCurrent(refCopy.getCurrentDirectory())
-    ,   mObjCurrentFile(refCopy.getCurrentFile().fileName())
+    ,   msCurrentDirectory(refCopy.getCurrentDirectory())
+    ,   msCurrentFile(refCopy.getCurrentFile())
     ,   mObjStatus(refCopy.getStatus())
 { }
 
-void ProcessModel::addDirectory(const QDir &refDirectory, const QList<QFile> &lstFiles)
+void ProcessModel::addDirectory(const QString &sDirectory, const QList<QString> &lstFiles)
 {
-    getFiles().insert(refDirectory, lstFiles);
+    getFiles().insert(sDirectory, lstFiles);
 
     setChanged();
     notifyObservers("Directory");
+}
+
+void ProcessModel::exit()
+{
+    //TODO Put code in here
 }
 
 FileCopierController &ProcessModel::getController() const
@@ -94,14 +74,14 @@ FileCopierController &ProcessModel::getController() const
     return(const_cast<FileCopierController &>(mRefController));
 }
 
-QDir &ProcessModel::getCurrentDirectory() const
+QString &ProcessModel::getCurrentDirectory() const
 {
-    return(const_cast<QDir &>(mDirCurrent));
+    return(const_cast<QString &>(msCurrentDirectory));
 }
 
-QFile &ProcessModel::getCurrentFile() const
+QString &ProcessModel::getCurrentFile() const
 {
-    return(const_cast<QFile &>(mObjCurrentFile));
+    return(const_cast<QString &>(msCurrentFile));
 }
 
 long &ProcessModel::getCurrentPosition() const
@@ -109,9 +89,9 @@ long &ProcessModel::getCurrentPosition() const
     return(const_cast<long &>(mlCurrentPosition));
 }
 
-const QList<QFile> &ProcessModel::getFilesForDirectory(const QDir &refDirectory) const
+const QList<QString> &ProcessModel::getFilesForDirectory(const QString &sDirectory) const
 {
-    return(getFiles()[refDirectory]);
+    return(getFiles()[sDirectory]);
 }
 
 ProcessModel::Status &ProcessModel::getStatus() const
@@ -124,41 +104,31 @@ void ProcessModel::pause()
         //TODO Do stuff to set status to PAUSE
 }
 
-void ProcessModel::removeDirecotry(const QDir &refDirectory)
+void ProcessModel::removeDirecotry(const QString &sDirectory)
 {
-    getFiles().remove(refDirectory);
+    getFiles().remove(sDirectory);
 
     // TODO Do something to delete from the file system
 }
 
-void ProcessModel::removeFileUnderDirectory(const QDir &refDirectory, const QFile &refFile)
+void ProcessModel::removeFileUnderDirectory(const QString &sDirectory, const QString &sFile)
 {
-    getFiles()[refDirectory].removeOne(refFile);
+    getFiles()[sDirectory].removeOne(sFile);
 
     //TODO Do something to remove from the file system
 }
 
-void ProcessModel::removeFileUnderDirectory(const QDir &refDirectory, const QString &sFile)
+void ProcessModel::setCurrentDirectory(const QString &sDirectory)
 {
-    removeFileUnderDirectory(refDirectory, QFile(sFile));
-}
-
-void ProcessModel::setCurrentDirectory(const QDir &refDirectory)
-{
-    mDirCurrent = refDirectory;
+    msCurrentDirectory = sDirectory;
 
     setChanged();
     notifyObservers("CurrentDirectory");
 }
 
-void ProcessModel::setCurrentFile(const QFile &objFile)
-{
-    setCurrentFile(objFile.fileName());
-}
-
 void ProcessModel::setCurrentFile(const QString &sFile)
 {
-    mObjCurrentFile.setFileName(sFile);
+    msCurrentFile = sFile;
 
     setChanged();
     notifyObservers("CurrentFile");
@@ -172,9 +142,9 @@ void ProcessModel::setCurrentPosition(const long &lPosition)
     notifyObservers("CurrentPosition");
 }
 
-void ProcessModel::setFilesForDirectory(const QDir &refDirectory, const QList<QFile> &lstFiles)
+void ProcessModel::setFilesForDirectory(const QString &sDirectory, const QList<QString> &lstFiles)
 {
-    getFiles()[refDirectory] = lstFiles;
+    getFiles()[sDirectory] = lstFiles;
 
     setChanged();
     notifyObservers("Directory");

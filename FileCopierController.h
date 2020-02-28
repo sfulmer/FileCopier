@@ -1,7 +1,7 @@
 #pragma once
 
-#include "FileCopierModel.h"
 #include "ProcessModel.h"
+#include "SetupModel.h"
 
 using namespace net::draconia::FileCopier::model;
 
@@ -13,15 +13,16 @@ namespace net
         {
             class FileCopierController
             {
-                FileCopierModel mObjSetupModel;
-                ProcessModel mObjProcessModel;
+               ProcessModel mObjProcessModel;
+               SetupModel mObjSetupModel;
             public:
                 FileCopierController();
 
-                FileCopierModel &getSetupModel() const;
                 ProcessModel &getProcessModel() const;
+                SetupModel &getSetupModel() const;
 
                 void cancelProcess();
+                void exit();
                 void pauseProcess();
                 void resumeProcess();
                 void startProcess();

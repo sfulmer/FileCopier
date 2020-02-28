@@ -19,20 +19,17 @@ namespace net
                 {
                     Q_OBJECT
 
-                    QSharedPointer<ProcessModel> mPtrModel;
+                    ProcessModel &mRefModel;
                     QPushButton *mBtnCancel, *mBtnPauseResume;
                 protected:
                     void initControls();
                     void initPanel();
                 public:
-                    explicit ProcessButtonPanel(QWidget *parent = nullptr);
                     ProcessButtonPanel(QWidget *parent, const ProcessModel &refModel);
-                    ~ProcessButtonPanel();
 
                     QPushButton *getCancelButton();
                     ProcessModel &getModel();
                     QPushButton *getPauseResumeButton();
-                    void setModel(const ProcessModel &refModel);
                 signals:
 
                 };
