@@ -11,7 +11,6 @@ void SetupButtonPanel::initControls()
     setLayout(layout);
 
     layout->addWidget(getStartButton());
-    layout->addWidget(getExitButton());
 }
 
 void SetupButtonPanel::initPanel()
@@ -24,25 +23,24 @@ void SetupButtonPanel::initPanel()
 SetupButtonPanel::SetupButtonPanel(QWidget *parent, FileCopierController &refController)
     :   QWidget(parent)
     ,   mRefController(refController)
-{ }
+    ,   mBtnStart(nullptr)
+{
+    initPanel();
+}
 
 FileCopierController &SetupButtonPanel::getController() const
 {
     return(const_cast<FileCopierController &>(mRefController));
 }
 
-QPushButton *SetupButtonPanel::getExitButton()
-{
-    if(mBtnExit == nullptr)
-        mBtnExit = new QPushButton("E&xit", this);
-
-    return(mBtnExit);
-}
-
 QPushButton *SetupButtonPanel::getStartButton()
 {
     if(mBtnStart == nullptr)
+        {
         mBtnStart = new QPushButton("&Start", this);
+
+        mBtnStart->setDisabled(true);
+        }
 
     return(mBtnStart);
 }

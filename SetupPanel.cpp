@@ -17,15 +17,21 @@ void SetupPanel::initControls()
 
 void SetupPanel::initPanel()
 {
-    setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred));
+    setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding));
 
     initControls();
 }
 
 SetupPanel::SetupPanel(QWidget *parent, SetupModel &refModel)
     :   QWidget(parent)
+    ,   mChkResumeFromLastPosition(nullptr)
+    ,   mPnlButtons(nullptr)
     ,   mRefSetupModel(refModel)
-{ }
+    ,   mPnlSource(nullptr)
+    ,   mPnlTarget(nullptr)
+{
+    initPanel();
+}
 
 SetupButtonPanel *SetupPanel::getButtonPanel()
 {

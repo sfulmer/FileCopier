@@ -2,57 +2,41 @@
 #include <QHBoxLayout>
 #include <QSplitter>
 
+using net::draconia::FileCopier::FileCopierController;
 using namespace net::draconia::FileCopier::ui;
 
 void FileCopierMainWindow::initControls()
 {
-    QLayout *layout = new QHBoxLayout(this);
-
-    setLayout(layout);
-
-    layout->addWidget(getSplitterPanel());
+    setCentralWidget(getMainPanel());
 }
 
 void FileCopierMainWindow::initPanel()
 {
     setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding));
+    setWindowTitle("File Copier");
 
     initControls();
+
+    setStyleSheet("background-color: black;color: white;");
 }
 
-FileCopierMainWindow::FileCopierMainWindow(QWidget *parent)
+FileCopierMainWindow::FileCopierMainWindow(QWidget *parent, FileCopierController &refController)
     :   QMainWindow(parent)
-    ,   mPnlSplitter(nullptr)
-    ,   mPnlSetup(nullptr)
+    ,   mRefController(refController)
+    ,   mPnlMain(nullptr)
 {
     initPanel();
 }
 
-FileCopierMainWindow::~FileCopierMainWindow()
-{ }
-
-void FileCopierMainWindow::getProcessPanel()
+FileCopierController &FileCopierMainWindow::getController()
 {
-    // TODO
+    return(mRefController);
 }
 
-SetupPanel *FileCopierMainWindow::FileCopierMainWindow::getSetupPanel()
+FileCopierMainPanel *FileCopierMainWindow::getMainPanel()
 {
-    if(mPnlSetup == nullptr)
-        mPnlSetup = new SetupPanel(this);
+    if(mPnlMain == nullptr)
+        mPnlMain = new FileCopierMainPanel(this, getController());
 
-    return(mPnlSetup);
-}
-
-QSplitter *FileCopierMainWindow::getSplitterPanel()
-{
-    if(mPnlSplitter == nullptr)
-        {
-        mPnlSplitter = new QSplitter(Qt::Orientation::Horizontal, this);
-
-        mPnlSplitter->addWidget(getSetupPanel());
-        //mPnlSplitter->addWidget(getProcessPanel());
-        }
-
-    return(mPnlSplitter);
+    return(mPnlMain);
 }

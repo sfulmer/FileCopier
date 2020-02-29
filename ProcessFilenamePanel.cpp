@@ -23,13 +23,17 @@ void ProcessFilenamePanel::initPanel()
 ProcessFilenamePanel::ProcessFilenamePanel(QWidget *parent, const ProcessModel &refModel)
     :   QWidget(parent)
     ,   mRefProcessModel(const_cast<ProcessModel &>(refModel))
-{ }
+    ,   mLblFile(nullptr)
+    ,   mLblFilename(nullptr)
+{
+    initPanel();
+}
 
 QLabel *ProcessFilenamePanel::getFileLabel()
 {
     if(mLblFile == nullptr)
         {
-        mLblFile = new QLabel("File:, this");
+        mLblFile = new QLabel("File: ", this);
 
         mLblFile->setAutoFillBackground(false);
         }
@@ -41,7 +45,12 @@ QLabel *ProcessFilenamePanel::getFilenameLabel()
 {
     if(mLblFilename == nullptr)
         {
-        mLblFilename = new QLabel(getProcessModel().getCurrentFile(), this);
+        QString sFilename = getProcessModel().getCurrentFile();
+
+        if(sFilename == "")
+            sFilename = "N/A";
+
+        mLblFilename = new QLabel(sFilename, this);
 
         mLblFilename->setAutoFillBackground(false);
         }

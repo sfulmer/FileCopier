@@ -10,6 +10,8 @@ void SourcePanel::initControls()
     layout->addWidget(getSourceLabel());
     layout->addWidget(getSourceField());
     layout->addWidget(getBrowseButton());
+
+    setLayout(layout);
 }
 
 void SourcePanel::initPanel()
@@ -53,7 +55,12 @@ QLineEdit *SourcePanel::getSourceField()
 QLabel *SourcePanel::getSourceLabel()
 {
     if(mLblSource == nullptr)
+        {
         mLblSource = new QLabel("&Source:", this);
+
+        mLblSource->setAutoFillBackground(false);
+        mLblSource->setBuddy(getSourceField());
+        }
 
     return(mLblSource);
 }

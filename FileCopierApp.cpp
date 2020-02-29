@@ -27,7 +27,9 @@ FileCopierApp::FileCopierApp(int argc, char *argv[])
 
 int FileCopierApp::exec()
 {
-    QApplication::exec();
+    showMainWindow();
+
+    return(QApplication::exec());
 }
 
 FileCopierController &FileCopierApp::getController()

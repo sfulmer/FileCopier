@@ -21,9 +21,9 @@ namespace net
                 {
                     Q_OBJECT
 
-                    SetupModel &mRefSetupModel;
                     QCheckBox *mChkResumeFromLastPosition;
                     SetupButtonPanel *mPnlButtons;
+                    SetupModel &mRefSetupModel;
                     SourcePanel *mPnlSource;
                     TargetPanel *mPnlTarget;
                 protected:

@@ -1,11 +1,10 @@
 #pragma once
 
 #include "ProcessModel.h"
-#include <QPushButton>
-#include <QSharedPointer>
+#include <QLabel>
 #include <QWidget>
 
-using namespace net::draconia::FileCopier::model;
+using net::draconia::FileCopier::model::ProcessModel;
 
 namespace net
 {
@@ -15,20 +14,21 @@ namespace net
         {
             namespace ui
             {
-                class ProcessButtonPanel : public QWidget
+                class ProcessStatusPanel : public QWidget
                 {
                     Q_OBJECT
 
                     ProcessModel &mRefModel;
-                    QPushButton *mBtnPauseResume;
+                    QLabel *mLblStatus, *mLblStatusText;
                 protected:
                     void initControls();
                     void initPanel();
                 public:
-                    ProcessButtonPanel(QWidget *parent, const ProcessModel &refModel);
+                    ProcessStatusPanel(QWidget *parent, ProcessModel &refModel);
 
                     ProcessModel &getModel();
-                    QPushButton *getPauseResumeButton();
+                    QLabel *getStatusLabel();
+                    QLabel *getStatusText();
                 signals:
 
                 };

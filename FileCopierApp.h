@@ -25,7 +25,7 @@ namespace net
             QList<QString> mLstArgs;
         protected:
             RunningState getRunningState() const;
-            void setArguments(int argc, const char *argv[]);
+            void setArguments(int argc, char *argv[]);
             void showMainWindow();
         public:
             FileCopierApp(int argc, char *argv[]);

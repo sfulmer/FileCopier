@@ -4,6 +4,7 @@
 #include <QPushButton>
 #include <QWidget>
 
+using net::draconia::FileCopier::FileCopierController;
 
 namespace net
 {
@@ -13,20 +14,20 @@ namespace net
         {
             namespace ui
             {
-                class SetupButtonPanel : public QWidget
+                class FileCopierButtonPanel : public QWidget
                 {
                     Q_OBJECT
 
                     FileCopierController &mRefController;
-                    QPushButton *mBtnStart;
+                    QPushButton *mBtnExit;
                 protected:
                     void initControls();
                     void initPanel();
                 public:
-                    SetupButtonPanel(QWidget *parent, FileCopierController &refController);
+                    FileCopierButtonPanel(QWidget *parent, FileCopierController &refController);
 
-                    FileCopierController &getController() const;
-                    QPushButton *getStartButton();
+                    QPushButton *getExitButton();
+                    FileCopierController &getController();
                 signals:
 
                 };

@@ -1,6 +1,8 @@
+#include "FileCopierController.h"
 #include "ProcessPanel.h"
 #include <QVBoxLayout>
 
+using net::draconia::FileCopier::FileCopierController;
 using namespace net::draconia::FileCopier::ui;
 
 void ProcessPanel::initControls()
@@ -11,6 +13,7 @@ void ProcessPanel::initControls()
 
     layout->addWidget(getFilenamePanel());
     layout->addWidget(getProgressBar());
+    layout->addWidget(getStatusPanel());
     layout->addWidget(getButtonPanel());
 }
 
@@ -25,7 +28,8 @@ ProcessPanel::ProcessPanel(QWidget *parent, SetupModel &refSetupModel)
     :   QWidget(parent)
     ,   mPnlButtons(nullptr)
     ,   mPnlFilename(nullptr)
-    ,   mObjProcessModel(refSetupModel.getController())
+    ,   mObjProcessModel(refSetupModel.getController().getProcessModel())
+    ,   mPnlStatus(nullptr)
     ,   mBarProgress(nullptr)
     ,   mRefSetupModel(refSetupModel)
 {
@@ -64,4 +68,12 @@ QProgressBar *ProcessPanel::getProgressBar()
 const SetupModel &ProcessPanel::getSetupModel() const
 {
     return(mRefSetupModel);
+}
+
+ProcessStatusPanel *ProcessPanel::getStatusPanel()
+{
+    if(mPnlStatus == nullptr)
+        mPnlStatus = new ProcessStatusPanel(this, getProcessModel());
+
+    return(mPnlStatus);
 }

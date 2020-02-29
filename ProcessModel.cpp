@@ -19,11 +19,11 @@ const QString &ProcessModel::Status::getText() const
     return(msText);
 }
 
-const static ProcessModel::Status COPYING("Copying");
-const static ProcessModel::Status DONE("Done");
-const static ProcessModel::Status PAUSED("Paused");
-const static ProcessModel::Status SETUP("Setup");
-const static ProcessModel::Status STALLED("Stalled");
+const ProcessModel::Status ProcessModel::Status::COPYING("Copying");
+const ProcessModel::Status ProcessModel::Status::DONE("Done");
+const ProcessModel::Status ProcessModel::Status::PAUSED("Paused");
+const ProcessModel::Status ProcessModel::Status::SETUP("Setup");
+const ProcessModel::Status ProcessModel::Status::STALLED("Stalled");
 
 QMap<QString, QList<QString>> &ProcessModel::getFiles() const
 {

@@ -1,12 +1,13 @@
 #pragma once
 
-#include "SetupModel.h"
 #include "ProcessButtonPanel.h"
-#include "ProcessModel.h"
 #include "ProcessFilenamePanel.h"
+#include "ProcessModel.h"
+#include "ProcessStatusPanel.h"
 #include <QProgressBar>
 #include <QPushButton>
 #include <QWidget>
+#include "SetupModel.h"
 
 using namespace net::draconia::FileCopier::model;
 
@@ -25,6 +26,7 @@ namespace net
                     ProcessButtonPanel *mPnlButtons;
                     ProcessFilenamePanel *mPnlFilename;
                     ProcessModel mObjProcessModel;
+                    ProcessStatusPanel *mPnlStatus;
                     QProgressBar *mBarProgress;
                     SetupModel &mRefSetupModel;
                 protected:
@@ -38,6 +40,7 @@ namespace net
                     ProcessModel &getProcessModel();
                     QProgressBar *getProgressBar();
                     const SetupModel &getSetupModel() const;
+                    ProcessStatusPanel *getStatusPanel();
                 signals:
 
                 };

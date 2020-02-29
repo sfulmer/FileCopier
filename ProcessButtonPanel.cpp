@@ -10,7 +10,6 @@ void ProcessButtonPanel::initControls()
     setLayout(layout);
 
     layout->addWidget(getPauseResumeButton());
-    layout->addWidget(getCancelButton());
 }
 
 void ProcessButtonPanel::initPanel()
@@ -23,14 +22,9 @@ void ProcessButtonPanel::initPanel()
 ProcessButtonPanel::ProcessButtonPanel(QWidget *parent, const ProcessModel &refModel)
     :   QWidget(parent)
     ,   mRefModel(const_cast<ProcessModel &>(refModel))
-{ }
-
-QPushButton *ProcessButtonPanel::getCancelButton()
+    ,   mBtnPauseResume(nullptr)
 {
-    if(mBtnCancel == nullptr)
-        mBtnCancel = new QPushButton("Cancel", this);
-
-    return(mBtnCancel);
+    initPanel();
 }
 
 ProcessModel &ProcessButtonPanel::getModel()
@@ -41,7 +35,11 @@ ProcessModel &ProcessButtonPanel::getModel()
 QPushButton *ProcessButtonPanel::getPauseResumeButton()
 {
     if(mBtnPauseResume == nullptr)
-        mBtnPauseResume = new QPushButton("Start", this);
+        {
+        mBtnPauseResume = new QPushButton("Resume", this);
+
+        mBtnPauseResume->setDisabled(true);
+        }
 
     return(mBtnPauseResume);
 }
