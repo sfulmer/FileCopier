@@ -1,9 +1,7 @@
 #pragma once
 
+#include <QList>
 #include <QString>
-#include <vector>
-
-using namespace std;
 
 namespace net
 {
@@ -22,14 +20,15 @@ namespace net
             class Observable
             {
                 bool mbChanged;
-                vector<Observer *> mLstObservers;
+                QList<Observer *> mLstObservers;
             protected:
                 void notifyObservers(const QString &sProperty);
                 void setChanged(const bool bChanged = true);
             public:
                 Observable();
 
-                const vector<Observer *> &getObservers() const;
+                void addObserver(const Observer *objObserver);
+                const QList<Observer *> &getObservers() const;
                 bool isChanged() const;
             };
         }

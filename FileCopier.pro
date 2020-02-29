@@ -31,6 +31,7 @@ SOURCES += \
     SetupPanel.cpp \
     SourcePanel.cpp \
     SourcePanelModel.cpp \
+    SourcePanelObserver.cpp \
     TargetPanel.cpp \
     TargetPanelModel.cpp \
     main.cpp \
@@ -53,6 +54,7 @@ HEADERS += \
     SetupPanel.h \
     SourcePanel.h \
     SourcePanelModel.h \
+    SourcePanelObserver.h \
     TargetPanel.h \
     TargetPanelModel.h
 

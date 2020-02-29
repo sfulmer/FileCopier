@@ -1,7 +1,26 @@
 #include <QHBoxLayout>
+#include <QFileDialog>
+#include <QMessageBox>
 #include "SourcePanel.h"
+#include "SourcePanelObserver.h"
 
+using net::draconia::FileCopier::observers::SourceFileObserver;
 using namespace net::draconia::FileCopier::ui;
+
+void SourcePanel::browseForSource()
+{
+    QFileDialog dlgFile(this, "Browse For Source File|Folder");
+    QString sFilename;
+
+    dlgFile.setAcceptMode(QFileDialog::AcceptMode::AcceptOpen);
+    dlgFile.setFileMode(QFileDialog::FileMode::Directory);
+
+    if(dlgFile.exec() == QFileDialog::Accepted)
+        {
+        sFilename = dlgFile.selectedFiles()[0];
+
+        getModel().setSourceFile(sFilename);        }
+}
 
 void SourcePanel::initControls()
 {
@@ -28,13 +47,19 @@ SourcePanel::SourcePanel(QWidget *parent, SourcePanelModel &refModel)
     ,   mBtnBrowse(nullptr)
     ,   mObjModel(refModel)
 {
+    getModel().addObserver(new SourceFileObserver(getSourceField()));
+
     initPanel();
 }
 
 QPushButton *SourcePanel::getBrowseButton()
 {
     if(mBtnBrowse == nullptr)
+        {
         mBtnBrowse = new QPushButton("&Browse...", this);
+
+        connect(mBtnBrowse, &QPushButton::clicked, this, &SourcePanel::browseForSource);
+        }
 
     return(mBtnBrowse);
 }

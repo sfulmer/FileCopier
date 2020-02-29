@@ -19,7 +19,12 @@ Observable::Observable()
     :   mbChanged(false)
 { }
 
-const vector<Observer *> &Observable::getObservers() const
+void Observable::addObserver(const Observer *objObserver)
+{
+    mLstObservers.append(const_cast<Observer *>(objObserver));
+}
+
+const QList<Observer *> &Observable::getObservers() const
 {
     return(mLstObservers);
 }

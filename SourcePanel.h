@@ -25,6 +25,7 @@ namespace net
                     QPushButton *mBtnBrowse;
                     SourcePanelModel &mObjModel;
                 protected:
+                    void browseForSource();
                     void initControls();
                     void initPanel();
                 public:
@@ -35,7 +36,6 @@ namespace net
                     QLineEdit *getSourceField();
                     QLabel *getSourceLabel();
                 signals:
-
                 };
             }
         }
