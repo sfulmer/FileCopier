@@ -1,6 +1,8 @@
 #include <QVBoxLayout>
+#include "ResumeFromLastPositionObserver.h"
 #include "SetupPanel.h"
 
+using net::draconia::FileCopier::observers::ResumeFromLastPositionObserver;
 using namespace net::draconia::FileCopier::ui;
 
 void SetupPanel::initControls()
@@ -22,6 +24,14 @@ void SetupPanel::initPanel()
     initControls();
 }
 
+void SetupPanel::resumeFromLastPositionClicked()
+{
+    bool bChecked = getResumeFromLastPositionCheckBox()->checkState() == Qt::CheckState::Checked;
+
+    if(getModel().getResumeFromLastPosition() != bChecked)
+        getModel().setResumeFromLastPosition(bChecked);
+}
+
 SetupPanel::SetupPanel(QWidget *parent, SetupModel &refModel)
     :   QWidget(parent)
     ,   mChkResumeFromLastPosition(nullptr)
@@ -30,6 +40,8 @@ SetupPanel::SetupPanel(QWidget *parent, SetupModel &refModel)
     ,   mPnlSource(nullptr)
     ,   mPnlTarget(nullptr)
 {
+    getModel().addObserver(new ResumeFromLastPositionObserver(getResumeFromLastPositionCheckBox()));
+
     initPanel();
 }
 
@@ -49,7 +61,11 @@ SetupModel &SetupPanel::getModel() const
 QCheckBox *SetupPanel::getResumeFromLastPositionCheckBox()
 {
     if(mChkResumeFromLastPosition == nullptr)
+        {
         mChkResumeFromLastPosition = new QCheckBox("&Resume from Last Position?", this);
+
+        connect(mChkResumeFromLastPosition, &QCheckBox::clicked, this, &SetupPanel::resumeFromLastPositionClicked);
+        }
 
     return(mChkResumeFromLastPosition);
 }

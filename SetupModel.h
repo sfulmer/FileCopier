@@ -18,7 +18,7 @@ namespace net
             {
                 class SetupModel : public Observable
                 {
-                    bool mbRestartFromLastPosition;
+                    bool mbResumeFromLastPosition;
                     FileCopierController &mRefController;
                     SourcePanelModel mObjSourcePanelModel;
                     TargetPanelModel mObjTargetPanelModel;
@@ -28,10 +28,10 @@ namespace net
                     SetupModel(const SetupModel &refCopy);
 
                     FileCopierController &getController() const;
-                    bool getRestartFromLastPosition() const;
+                    bool getResumeFromLastPosition() const;
                     SourcePanelModel &getSourcePanelModel() const;
                     TargetPanelModel &getTargetPanelModel() const;
-                    void setRestartFromLastPosition(const bool bRestartFromLastPosition);
+                    void setResumeFromLastPosition(const bool bRestartFromLastPosition);
                 };
             }
         }

@@ -29,6 +29,7 @@ namespace net
                 protected:
                     void initControls();
                     void initPanel();
+                    void resumeFromLastPositionClicked();
                 public:
                     SetupPanel(QWidget *parent, SetupModel &refSetupModel);
 

@@ -5,13 +5,13 @@ using namespace net::draconia::FileCopier::model;
 
 SetupModel::SetupModel(FileCopierController &refController)
     :   Observable()
-    ,   mbRestartFromLastPosition(true)
+    ,   mbResumeFromLastPosition(true)
     ,   mRefController(refController)
 { }
 
 SetupModel::SetupModel(FileCopierController &refController, const SourcePanelModel &refSourceModel, const TargetPanelModel &refTargetModel)
     :   Observable()
-    ,   mbRestartFromLastPosition(true)
+    ,   mbResumeFromLastPosition(true)
     ,   mRefController(refController)
     ,   mObjSourcePanelModel(refSourceModel)
     ,   mObjTargetPanelModel(refTargetModel)
@@ -19,7 +19,7 @@ SetupModel::SetupModel(FileCopierController &refController, const SourcePanelMod
 
 SetupModel::SetupModel(const SetupModel &refCopy)
     :   Observable(refCopy)
-    ,   mbRestartFromLastPosition(refCopy.getRestartFromLastPosition())
+    ,   mbResumeFromLastPosition(refCopy.getResumeFromLastPosition())
     ,   mRefController(refCopy.getController())
     ,   mObjSourcePanelModel(refCopy.getSourcePanelModel())
     ,   mObjTargetPanelModel(refCopy.getTargetPanelModel())
@@ -30,9 +30,9 @@ FileCopierController &SetupModel::getController() const
     return(const_cast<FileCopierController &>(mRefController));
 }
 
-bool SetupModel::getRestartFromLastPosition() const
+bool SetupModel::getResumeFromLastPosition() const
 {
-    return(mbRestartFromLastPosition);
+    return(mbResumeFromLastPosition);
 }
 
 SourcePanelModel &SetupModel::getSourcePanelModel() const
@@ -45,10 +45,10 @@ TargetPanelModel &SetupModel::getTargetPanelModel() const
     return(const_cast<TargetPanelModel &>(mObjTargetPanelModel));
 }
 
-void SetupModel::setRestartFromLastPosition(const bool bRestartFromLastPosition)
+void SetupModel::setResumeFromLastPosition(const bool bResumeFromLastPosition)
 {
-    mbRestartFromLastPosition = bRestartFromLastPosition;
+    mbResumeFromLastPosition = bResumeFromLastPosition;
 
     setChanged();
-    notifyObservers("RestartFromLastPosition");
+    notifyObservers("ResumeFromLastPosition");
 }
