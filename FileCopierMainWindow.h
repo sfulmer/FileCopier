@@ -19,6 +19,7 @@ namespace net
                     FileCopierController &mRefController;
                     FileCopierMainPanel *mPnlMain;
                 protected:
+                    void closeEvent(QCloseEvent *event);
                     void initControls();
                     void initPanel();
                 public:

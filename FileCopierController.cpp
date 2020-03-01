@@ -1,11 +1,19 @@
+#include "FileCopierApp.h"
 #include "FileCopierController.h"
 
+using net::draconia::FileCopierApp;
 using namespace net::draconia::FileCopier;
 using net::draconia::FileCopier::model::ProcessModel;
 using net::draconia::FileCopier::model::SetupModel;
 
-FileCopierController::FileCopierController()
-    :   mObjProcessModel(*this)
+FileCopierApp &FileCopierController::getApplication()
+{
+    return(mRefApp);
+}
+
+FileCopierController::FileCopierController(FileCopierApp &refApp)
+    :   mRefApp(refApp)
+    ,   mObjProcessModel(*this)
     ,   mObjSetupModel(*this)
 { }
 
@@ -21,7 +29,7 @@ void FileCopierController::cancelProcess()
 
 void FileCopierController::exit()
 {
-    //TODO Put code here
+    getApplication().exit();
 }
 
 void FileCopierController::pauseProcess()

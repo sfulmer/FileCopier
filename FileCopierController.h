@@ -9,14 +9,19 @@ namespace net
 {
     namespace draconia
     {
+        class FileCopierApp;
+
         namespace FileCopier
         {
             class FileCopierController
             {
-               ProcessModel mObjProcessModel;
-               SetupModel mObjSetupModel;
+                FileCopierApp &mRefApp;
+                ProcessModel mObjProcessModel;
+                SetupModel mObjSetupModel;
+            protected:
+                FileCopierApp &getApplication();
             public:
-                FileCopierController();
+                FileCopierController(FileCopierApp &refApp);
 
                 ProcessModel &getProcessModel() const;
                 SetupModel &getSetupModel() const;

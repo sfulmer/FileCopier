@@ -31,6 +31,7 @@ namespace net
             FileCopierApp(int argc, char *argv[]);
             void error();
             int exec();
+            void exit();
             QList<QString> &getArguments() const;
             FileCopierController &getController();
             FileCopierMainWindow &getMainWindow();

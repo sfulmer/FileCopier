@@ -21,6 +21,7 @@ namespace net
                     FileCopierController &mRefController;
                     QPushButton *mBtnExit;
                 protected:
+                    void exitApplication();
                     void initControls();
                     void initPanel();
                 public:

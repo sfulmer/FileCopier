@@ -4,6 +4,11 @@
 using net::draconia::FileCopier::FileCopierController;
 using namespace net::draconia::FileCopier::ui;
 
+void FileCopierButtonPanel::exitApplication()
+{
+    getController().exit();
+}
+
 void FileCopierButtonPanel::initControls()
 {
     QLayout *layout = new QHBoxLayout(this);
@@ -33,6 +38,8 @@ QPushButton *FileCopierButtonPanel::getExitButton()
     if(mBtnExit == nullptr)
         {
         mBtnExit = new QPushButton("E&xit", this);
+
+        connect(mBtnExit, &QPushButton::clicked, this, &FileCopierButtonPanel::exitApplication);
         }
 
     return(mBtnExit);

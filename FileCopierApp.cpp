@@ -20,6 +20,7 @@ void FileCopierApp::showMainWindow()
 
 FileCopierApp::FileCopierApp(int argc, char *argv[])
     :   QApplication(argc, argv)
+    ,   mObjController(*this)
     ,   mWndMain(nullptr, getController())
 {
     setArguments(argc, argv);
@@ -30,6 +31,11 @@ int FileCopierApp::exec()
     showMainWindow();
 
     return(QApplication::exec());
+}
+
+void FileCopierApp::exit()
+{
+    getMainWindow().close();
 }
 
 FileCopierController &FileCopierApp::getController()
