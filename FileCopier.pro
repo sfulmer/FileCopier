@@ -34,6 +34,7 @@ SOURCES += \
     SourcePanelObserver.cpp \
     TargetPanel.cpp \
     TargetPanelModel.cpp \
+    TargetPanelObserver.cpp \
     main.cpp \
     FileCopierMainWindow.cpp
 
@@ -56,7 +57,8 @@ HEADERS += \
     SourcePanelModel.h \
     SourcePanelObserver.h \
     TargetPanel.h \
-    TargetPanelModel.h
+    TargetPanelModel.h \
+    TargetPanelObserver.h
 
 TRANSLATIONS += \
     FileCopier_en_US.ts

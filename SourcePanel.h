@@ -28,6 +28,7 @@ namespace net
                     void browseForSource();
                     void initControls();
                     void initPanel();
+                    void sourceFileChanged();
                 public:
                     explicit SourcePanel(QWidget *parent, SourcePanelModel &refModel);
 

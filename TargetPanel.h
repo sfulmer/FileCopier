@@ -24,8 +24,11 @@ namespace net
                     QPushButton *mBtnBrowse;
                     TargetPanelModel &mObjModel;
                 protected:
+                    void browseForTarget();
+                    void fileFieldChanged();
                     void initControls();
                     void initPanel();
+                    void pathFieldChanged();
                 public:
                     TargetPanel(QWidget *parent, TargetPanelModel &refModel);
 

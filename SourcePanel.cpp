@@ -40,6 +40,12 @@ void SourcePanel::initPanel()
     initControls();
 }
 
+void SourcePanel::sourceFileChanged()
+{
+    if(getSourceField()->text() != getModel().getSourceFile())
+        getModel().setSourceFile(getSourceField()->text());
+}
+
 SourcePanel::SourcePanel(QWidget *parent, SourcePanelModel &refModel)
     :   QWidget(parent)
     ,   mLblSource(nullptr)
@@ -72,7 +78,11 @@ SourcePanelModel &SourcePanel::getModel() const
 QLineEdit *SourcePanel::getSourceField()
 {
     if(mTxtSource == nullptr)
+        {
         mTxtSource = new QLineEdit(this);
+
+        connect(mTxtSource, &QLineEdit::textChanged, this, &SourcePanel::sourceFileChanged);
+        }
 
     return(mTxtSource);
 }
