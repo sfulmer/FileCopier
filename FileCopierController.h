@@ -19,6 +19,7 @@ namespace net
                 ProcessModel mObjProcessModel;
                 SetupModel mObjSetupModel;
             protected:
+                QList<QString> collectListOfFilesToMove(const QString &sDir = "");
                 FileCopierApp &getApplication();
             public:
                 FileCopierController(FileCopierApp &refApp);

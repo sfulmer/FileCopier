@@ -1,5 +1,4 @@
 #include <QHBoxLayout>
-#include <QMessageBox>
 #include "SetupButtonPanel.h"
 #include "StartButtonObserver.h"
 
@@ -25,7 +24,7 @@ void SetupButtonPanel::initPanel()
 
 void SetupButtonPanel::startButtonClicked()
 {
-    QMessageBox::information(this, "WOOHOO!!", "We did it !");
+    getController().startProcess();
 }
 
 SetupButtonPanel::SetupButtonPanel(QWidget *parent, FileCopierController &refController)
