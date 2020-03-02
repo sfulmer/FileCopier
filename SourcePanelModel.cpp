@@ -45,14 +45,3 @@ void SourcePanelModel::setSourceFile(const QString sPath)
     setChanged();
     notifyObservers("SourceFile");
 }
-
-SourcePanelPathObserver::~SourcePanelPathObserver()
-{ }
-
-void SourcePanelPathObserver::update(const Observable &refObservable, const QString &sProperty)
-{
-    SourcePanelModel &refModel = static_cast<SourcePanelModel &>(const_cast<Observable &>(refObservable));
-
-    if(sProperty.toUpper() == QString("SourceFile").toUpper())
-        refModel.setDirectory(QFileInfo(refModel.getSourceFile()).isDir());
-}

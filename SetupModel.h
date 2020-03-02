@@ -1,6 +1,5 @@
 #pragma once
 
-//#include "FileCopierController.h"
 #include "SourcePanelModel.h"
 #include "TargetPanelModel.h"
 
@@ -16,9 +15,9 @@ namespace net
 
             namespace model
             {
-                class SetupModel : public Observable
+                class SetupModel : public Observable, public Observer
                 {
-                    bool mbResumeFromLastPosition;
+                    bool mbExitWhenDone, mbResumeFromLastPosition;
                     FileCopierController &mRefController;
                     SourcePanelModel mObjSourcePanelModel;
                     TargetPanelModel mObjTargetPanelModel;
@@ -28,10 +27,13 @@ namespace net
                     SetupModel(const SetupModel &refCopy);
 
                     FileCopierController &getController() const;
+                    bool getExitWhenDone() const;
                     bool getResumeFromLastPosition() const;
                     SourcePanelModel &getSourcePanelModel() const;
                     TargetPanelModel &getTargetPanelModel() const;
+                    void setExitWhenDone(const bool bExitWhenDone);
                     void setResumeFromLastPosition(const bool bRestartFromLastPosition);
+                    virtual void update(const Observable &objObservable, const QString &sProperty);
                 };
             }
         }

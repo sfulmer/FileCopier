@@ -22,6 +22,7 @@ namespace net
                 protected:
                     void initControls();
                     void initPanel();
+                    void startButtonClicked();
                 public:
                     SetupButtonPanel(QWidget *parent, FileCopierController &refController);
 

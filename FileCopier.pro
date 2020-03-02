@@ -16,6 +16,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    ExitWhenDoneObserver.cpp \
     FileCopierApp.cpp \
     FileCopierButtonPanel.cpp \
     FileCopierController.cpp \
@@ -33,6 +34,7 @@ SOURCES += \
     SourcePanel.cpp \
     SourcePanelModel.cpp \
     SourcePanelObserver.cpp \
+    StartButtonObserver.cpp \
     TargetPanel.cpp \
     TargetPanelModel.cpp \
     TargetPanelObserver.cpp \
@@ -40,6 +42,7 @@ SOURCES += \
     FileCopierMainWindow.cpp
 
 HEADERS += \
+    ExitWhenDoneObserver.h \
     FileCopierApp.h \
     FileCopierButtonPanel.h \
     FileCopierController.h \
@@ -58,6 +61,7 @@ HEADERS += \
     SourcePanel.h \
     SourcePanelModel.h \
     SourcePanelObserver.h \
+    StartButtonObserver.h \
     TargetPanel.h \
     TargetPanelModel.h \
     TargetPanelObserver.h

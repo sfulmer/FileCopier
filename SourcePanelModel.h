@@ -30,13 +30,6 @@ namespace net
                     bool isDirectory() const;
                     void setSourceFile(const QString sPath);
                 };
-
-                class SourcePanelPathObserver : public Observer
-                {
-                public:
-                    virtual ~SourcePanelPathObserver();
-                    virtual void update(const Observable &refObservable, const QString &sProperty);
-                };
             }
         }
     }

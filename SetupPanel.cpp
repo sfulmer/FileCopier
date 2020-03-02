@@ -1,9 +1,19 @@
+#include "ExitWhenDoneObserver.h"
 #include <QVBoxLayout>
 #include "ResumeFromLastPositionObserver.h"
 #include "SetupPanel.h"
 
+using net::draconia::FileCopier::observers::ExitWhenDoneObserver;
 using net::draconia::FileCopier::observers::ResumeFromLastPositionObserver;
 using namespace net::draconia::FileCopier::ui;
+
+void SetupPanel::exitWhenDoneClicked()
+{
+    bool bChecked = (getExitWhenDoneCheckBox()->checkState() == Qt::CheckState::Checked);
+
+    if(bChecked != getModel().getExitWhenDone())
+        getModel().setExitWhenDone(bChecked);
+}
 
 void SetupPanel::initControls()
 {
@@ -14,6 +24,7 @@ void SetupPanel::initControls()
     layout->addWidget(getSourcePanel());
     layout->addWidget(getTargetPanel());
     layout->addWidget(getResumeFromLastPositionCheckBox());
+    layout->addWidget(getExitWhenDoneCheckBox());
     layout->addWidget(getButtonPanel());
 }
 
@@ -34,12 +45,14 @@ void SetupPanel::resumeFromLastPositionClicked()
 
 SetupPanel::SetupPanel(QWidget *parent, SetupModel &refModel)
     :   QWidget(parent)
+    ,   mChkExitWhenDone(nullptr)
     ,   mChkResumeFromLastPosition(nullptr)
     ,   mPnlButtons(nullptr)
     ,   mRefSetupModel(refModel)
     ,   mPnlSource(nullptr)
     ,   mPnlTarget(nullptr)
 {
+    getModel().addObserver(new ExitWhenDoneObserver(getExitWhenDoneCheckBox()));
     getModel().addObserver(new ResumeFromLastPositionObserver(getResumeFromLastPositionCheckBox()));
 
     initPanel();
@@ -53,6 +66,19 @@ SetupButtonPanel *SetupPanel::getButtonPanel()
     return(mPnlButtons);
 }
 
+QCheckBox *SetupPanel::getExitWhenDoneCheckBox()
+{
+    if(mChkExitWhenDone == nullptr)
+        {
+        mChkExitWhenDone = new QCheckBox("&Exit when Done", this);
+
+        mChkExitWhenDone->setCheckState(getModel().getExitWhenDone() ? Qt::CheckState::Checked : Qt::CheckState::Unchecked);
+        connect(mChkExitWhenDone, &QCheckBox::clicked, this, &SetupPanel::exitWhenDoneClicked);
+        }
+
+    return(mChkExitWhenDone);
+}
+
 SetupModel &SetupPanel::getModel() const
 {
     return(mRefSetupModel);
@@ -64,6 +90,7 @@ QCheckBox *SetupPanel::getResumeFromLastPositionCheckBox()
         {
         mChkResumeFromLastPosition = new QCheckBox("&Resume from Last Position?", this);
 
+        mChkResumeFromLastPosition->setCheckState(getModel().getResumeFromLastPosition() ? Qt::CheckState::Checked : Qt::CheckState::Unchecked);
         connect(mChkResumeFromLastPosition, &QCheckBox::clicked, this, &SetupPanel::resumeFromLastPositionClicked);
         }
 

@@ -21,12 +21,13 @@ namespace net
                 {
                     Q_OBJECT
 
-                    QCheckBox *mChkResumeFromLastPosition;
+                    QCheckBox *mChkExitWhenDone, *mChkResumeFromLastPosition;
                     SetupButtonPanel *mPnlButtons;
                     SetupModel &mRefSetupModel;
                     SourcePanel *mPnlSource;
                     TargetPanel *mPnlTarget;
                 protected:
+                    void exitWhenDoneClicked();
                     void initControls();
                     void initPanel();
                     void resumeFromLastPositionClicked();
@@ -34,6 +35,7 @@ namespace net
                     SetupPanel(QWidget *parent, SetupModel &refSetupModel);
 
                     SetupButtonPanel *getButtonPanel();
+                    QCheckBox *getExitWhenDoneCheckBox();
                     SetupModel &getModel() const;
                     QCheckBox *getResumeFromLastPositionCheckBox();
                     SourcePanel *getSourcePanel();

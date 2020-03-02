@@ -79,7 +79,7 @@ QLineEdit *SourcePanel::getSourceField()
 {
     if(mTxtSource == nullptr)
         {
-        mTxtSource = new QLineEdit(this);
+        mTxtSource = new QLineEdit(getModel().getSourceFile(), this);
 
         connect(mTxtSource, &QLineEdit::textChanged, this, &SourcePanel::sourceFileChanged);
         }

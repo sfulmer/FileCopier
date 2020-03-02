@@ -1,7 +1,10 @@
 #include <QHBoxLayout>
+#include <QMessageBox>
 #include "SetupButtonPanel.h"
+#include "StartButtonObserver.h"
 
 using net::draconia::FileCopier::FileCopierController;
+using net::draconia::FileCopier::observers::StartButtonObserver;
 using namespace net::draconia::FileCopier::ui;
 
 void SetupButtonPanel::initControls()
@@ -20,11 +23,18 @@ void SetupButtonPanel::initPanel()
     initControls();
 }
 
+void SetupButtonPanel::startButtonClicked()
+{
+    QMessageBox::information(this, "WOOHOO!!", "We did it !");
+}
+
 SetupButtonPanel::SetupButtonPanel(QWidget *parent, FileCopierController &refController)
     :   QWidget(parent)
     ,   mRefController(refController)
     ,   mBtnStart(nullptr)
 {
+    getController().getSetupModel().addObserver(new StartButtonObserver(getStartButton()));
+
     initPanel();
 }
 
@@ -38,6 +48,8 @@ QPushButton *SetupButtonPanel::getStartButton()
     if(mBtnStart == nullptr)
         {
         mBtnStart = new QPushButton("&Start", this);
+
+        connect(mBtnStart, &QPushButton::clicked, this, &SetupButtonPanel::startButtonClicked);
 
         mBtnStart->setDisabled(true);
         }

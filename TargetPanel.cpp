@@ -102,7 +102,7 @@ QLineEdit *TargetPanel::getTargetFileField()
 {
     if(mTxtTargetFile == nullptr)
         {
-        mTxtTargetFile = new QLineEdit(this);
+        mTxtTargetFile = new QLineEdit(getModel().getFilename(), this);
 
         connect(mTxtTargetFile, &QLineEdit::textChanged, this, &TargetPanel::fileFieldChanged);
         }
@@ -128,7 +128,7 @@ QLineEdit *TargetPanel::getTargetPathField()
 {
     if(mTxtTargetPath == nullptr)
         {
-        mTxtTargetPath = new QLineEdit(this);
+        mTxtTargetPath = new QLineEdit(getModel().getPath(), this);
 
         connect(mTxtTargetPath, &QLineEdit::textChanged, this, &TargetPanel::pathFieldChanged);
         }
