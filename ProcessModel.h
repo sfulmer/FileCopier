@@ -1,10 +1,14 @@
 #pragma once
 
+#include <fstream>
+#include <iostream>
 #include "Observer.h"
 #include <QList>
 #include <QMap>
 
 using namespace net::draconia::util;
+using namespace std;
+
 
 namespace net
 {
@@ -22,6 +26,8 @@ namespace net
                     class Status
                     {
                         QString msText;
+                    protected:
+                        void setText(const QString &sText);
                     public:
                         Status();
                         Status(const QString &sText);
@@ -29,43 +35,66 @@ namespace net
 
                         const QString &getText() const;
 
-                        const static Status COPYING;
+                        bool operator==(const Status &refOther) const;
+                        bool operator!=(const Status &refOther) const;
+                        Status &operator=(const Status &refCopy);
+
                         const static Status DONE;
+                        const static Status MOVING;
                         const static Status PAUSED;
                         const static Status SETUP;
                         const static Status STALLED;
                     };
                 private:
+                    char mcBuffer[1024];
                     FileCopierController &mRefController;
+                    ifstream mObjIn;
+                    int miBufferReadSize, miBufferSize;
                     long mlCurrentPosition;
-                    QMap<QString, QList<QString>> mMapFiles;
-                    QString msCurrentDirectory, msCurrentFile;
-                    Status mObjStatus;
+                    ofstream mObjOut;
+                    qint64 miCurrentBytesMoved, miTotalBytesToMove;
+                    QList<QString> mLstFiles;
+                    QString msCurrentFile;
+                    Status &mObjStatus;
                 protected:
-                    QMap<QString, QList<QString>> &getFiles() const;
-                public:
-                    ProcessModel(FileCopierController &refController);
-                    ProcessModel(FileCopierController &refController, const QString &sFilename);
-                    ProcessModel(const ProcessModel &refCopy);
-
-                    void addDirectory(const QString &sDirectory, const QList<QString> &lstFiles);
-                    void exit();
-                    FileCopierController &getController() const;
-                    QString &getCurrentDirectory() const;
-                    QString &getCurrentFile() const;
-                    long &getCurrentPosition() const;
-                    const QList<QString> &getFilesForDirectory(const QString &sDirectory) const;
-                    Status &getStatus() const;
-                    void pause();
-                    void removeDirecotry(const QString &sDirectory);
-                    void removeFileUnderDirectory(const QString &sDirectory, const QString &sFile);
-                    void resume();
-                    void setCurrentDirectory(const QString &sDirectory);
+                    qint64 calculateTotalBytesToMove() const;
+                    char *getBuffer();
+                    int getBufferReadSize() const;
+                    int getBufferSize() const;
+                    QList<QString> &getFiles() const;
+                    ifstream &getInputFile();
+                    ofstream &getOutputFile();
+                    bool isDirectoryEmptyForFile(const QString &sFile) const;
+                    void moveFile(const QString sSource, const QString sTarget);
+                    void removeDirectory(const QString sDirectory);
+                    void removeFile(const QString &sFile);
+                    void setBufferReadSize(const int iBufferReadSize);
+                    void setBufferSize(const int iBufferSize);
+                    void setCurrentBytesMoved(const qint64 iCurrentBytesMoved);
                     void setCurrentFile(const QString &sFile);
                     void setCurrentPosition(const long &lPosition);
-                    void setFilesForDirectory(const QString &sDirectory, const QList<QString> &lstFiles);
                     void setStatus(const Status &refStatus);
-                    void startCopying();
+                    void setTotalBytesToMove(const qint64 iTotalBytesToMove);
+                public:
+                    ProcessModel(FileCopierController &refController);
+                    ProcessModel(const ProcessModel &refCopy);
+
+                    void addFile(const QString &sFile);
+                    void exit();
+                    FileCopierController &getController() const;
+                    qint64 getCurrentBytesMoved() const;
+                    QString &getCurrentFile() const;
+                    long &getCurrentPosition() const;
+                    const QList<QString> &getFilesToMove() const;
+                    Status &getStatus() const;
+                    qint64 getTotalBytesToMove();
+                    bool isMoving() const;
+                    bool isPaused() const;
+                    bool isStalled() const;
+                    void pause();
+                    void resume();
+                    void setFilesToMove(const QList<QString> &lstFiles);
+                    void start();
                 };
             }
         }

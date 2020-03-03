@@ -1,6 +1,8 @@
+#include "ProcessStatusObserver.h"
 #include "ProcessStatusPanel.h"
 #include <QHBoxLayout>
 
+using net::draconia::FileCopier::observers::ProcessStatusObserver;
 using namespace net::draconia::FileCopier::ui;
 
 void ProcessStatusPanel::initControls()
@@ -26,6 +28,8 @@ ProcessStatusPanel::ProcessStatusPanel(QWidget *parent, ProcessModel &refModel)
     ,   mLblStatus(nullptr)
     ,   mLblStatusText(nullptr)
 {
+    getModel().addObserver(new ProcessStatusObserver(getStatusText()));
+
     initPanel();
 }
 

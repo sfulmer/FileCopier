@@ -9,10 +9,13 @@ using namespace net::draconia::FileCopier::ui;
 
 void FileCopierMainWindow::closeEvent(QCloseEvent *event)
 {
-    if(QMessageBox::question(this, "Exit File Copier...", "Are you sure you want to exit?") == QMessageBox::Yes)
-        event->accept();
+    if(!getController().isNormalExit())
+        if(QMessageBox::question(this, "Exit File Copier...", "Are you sure you want to exit?") == QMessageBox::Yes)
+            event->accept();
+        else
+            event->ignore();
     else
-        event->ignore();
+        event->accept();
 }
 
 void FileCopierMainWindow::initControls()

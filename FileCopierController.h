@@ -15,12 +15,14 @@ namespace net
         {
             class FileCopierController
             {
+                bool mbNormalExit;
                 FileCopierApp &mRefApp;
                 ProcessModel mObjProcessModel;
                 SetupModel mObjSetupModel;
             protected:
                 QList<QString> collectListOfFilesToMove(const QString &sDir = "");
                 FileCopierApp &getApplication();
+                void setNormalExit(const bool bNormalExit);
             public:
                 FileCopierController(FileCopierApp &refApp);
 
@@ -28,7 +30,8 @@ namespace net
                 SetupModel &getSetupModel() const;
 
                 void cancelProcess();
-                void exit();
+                void exit(const bool bNormalExit = false);
+                bool isNormalExit() const;
                 void pauseProcess();
                 void resumeProcess();
                 void startProcess();

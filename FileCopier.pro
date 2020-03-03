@@ -26,6 +26,7 @@ SOURCES += \
     ProcessFilenamePanel.cpp \
     ProcessModel.cpp \
     ProcessPanel.cpp \
+    ProcessStatusObserver.cpp \
     ProcessStatusPanel.cpp \
     ResumeFromLastPositionObserver.cpp \
     SetupButtonPanel.cpp \
@@ -53,6 +54,7 @@ HEADERS += \
     ProcessFilenamePanel.h \
     ProcessModel.h \
     ProcessPanel.h \
+    ProcessStatusObserver.h \
     ProcessStatusPanel.h \
     ResumeFromLastPositionObserver.h \
     SetupButtonPanel.h \

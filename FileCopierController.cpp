@@ -26,12 +26,12 @@ QList<QString> FileCopierController::collectListOfFilesToMove(const QString &sDi
 
     for(QString sFile : sFileList)
         {
-        cout << sFile.toStdString() << endl;
+        cout << sDir.toStdString() << "/" << sFile.toStdString() << endl;
 
-        if(QFileInfo(sFile).isDir() && !((sFile == ".") || (sFile == "..")))
-            lstFiles.append(collectListOfFilesToMove(sFile));
+        if(QFileInfo(sDir + "/" + sFile).isDir() && !((sFile == ".") || (sFile == "..")))
+            lstFiles.append(collectListOfFilesToMove(sDir + "/" + sFile));
         else
-            lstFiles.append(sFile);
+            lstFiles.append(sDir + "/" + sFile);
         }
 
     return(lstFiles);
@@ -42,8 +42,14 @@ FileCopierApp &FileCopierController::getApplication()
     return(mRefApp);
 }
 
+void FileCopierController::setNormalExit(const bool bNormalExit)
+{
+    mbNormalExit = bNormalExit;
+}
+
 FileCopierController::FileCopierController(FileCopierApp &refApp)
-    :   mRefApp(refApp)
+    :   mbNormalExit(false)
+    ,   mRefApp(refApp)
     ,   mObjProcessModel(*this)
     ,   mObjSetupModel(*this)
 { }
@@ -53,19 +59,21 @@ SetupModel &FileCopierController::getSetupModel() const
     return(const_cast<SetupModel &>(mObjSetupModel));
 }
 
-void FileCopierController::cancelProcess()
+void FileCopierController::exit(const bool bNormalExit)
 {
-    // TODO Put code in here
-}
+    setNormalExit(bNormalExit);
 
-void FileCopierController::exit()
-{
     getApplication().exit();
 }
 
 ProcessModel &FileCopierController::getProcessModel() const
 {
     return(const_cast<ProcessModel &>(mObjProcessModel));
+}
+
+bool FileCopierController::isNormalExit() const
+{
+    return(mbNormalExit);
 }
 
 void FileCopierController::pauseProcess()
@@ -80,5 +88,8 @@ void FileCopierController::resumeProcess()
 
 void FileCopierController::startProcess()
 {
-    QList<QString> lstFiles = collectListOfFilesToMove(getSetupModel().getSourcePanelModel().getSourceFile());
+    for(QString sFile : collectListOfFilesToMove(getSetupModel().getSourcePanelModel().getSourceFile()))
+        getProcessModel().addFile(sFile);
+
+    getProcessModel().start();
 }
