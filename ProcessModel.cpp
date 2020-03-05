@@ -116,6 +116,14 @@ void ProcessModel::moveFile(const QString sSource, const QString sTarget)
 
     QCoreApplication::processEvents();
 
+    // Write the current buffer before reading more
+    if(isMoving() && getOutputFile() && (getBufferReadSize() > 0))
+        {
+        getOutputFile().write(getBuffer(), getBufferReadSize());
+
+        setCurrentBytesMoved(getCurrentBytesMoved() + getBufferReadSize());
+        }
+
      while((!getInputFile().eof()) && (!getInputFile()))
         {
         if(isMoving())
@@ -123,6 +131,14 @@ void ProcessModel::moveFile(const QString sSource, const QString sTarget)
                 {
                 setBufferReadSize(getInputFile().read(getBuffer(), getBufferSize()).gcount());
                 setCurrentPosition(getInputFile().tellg());
+
+                if(((getBufferReadSize() < getBufferSize()) && (!getInputFile().eof())) || (!getInputFile()))
+                    {
+                    setStatus(Status::STALLED);
+
+                    setCurrentPosition(getCurrentPosition() - getBufferReadSize());
+                    setBufferReadSize(0);
+                    }
                 }
 
         QCoreApplication::processEvents();
@@ -143,28 +159,27 @@ void ProcessModel::moveFile(const QString sSource, const QString sTarget)
            {
            getInputFile().close();
 
+           getOutputFile().flush();
+           getOutputFile().close();
+
            setCurrentPosition(0);
            }
 }
 
-void ProcessModel::removeDirectory(const QString sDirectory)
+void ProcessModel::removeCurrentDirectory()
 {
-    Q_UNUSED(sDirectory);
-
-    QDir parent(QFileInfo(sDirectory).path());
+    QDir parent(QFileInfo(getCurrentFile()).path());
 
     parent.cdUp();
-    parent.rmdir(QFileInfo(QFileInfo(sDirectory).path()).fileName());
+    parent.rmdir(QFileInfo(QFileInfo(getCurrentFile()).path()).fileName());
 
     setChanged();
     notifyObservers("Files");
 }
 
-void ProcessModel::removeFile(const QString &sFile)
+void ProcessModel::removeCurrentFile()
 {
-    Q_UNUSED(sFile);
-
-    QFile(sFile).remove();
+    QFile(getCurrentFile()).remove();
 
     setChanged();
     notifyObservers("Files");
@@ -345,11 +360,14 @@ void ProcessModel::resume()
 
         QCoreApplication::processEvents();
 
-        if(isMoving())
+        if(isMoving() && (!(getInputFile().is_open())))
             {
-            removeFile(getCurrentFile());
+            removeCurrentFile();
+
             QCoreApplication::processEvents();
-            //TODO Put code to remove directory of current file if empty after deletion
+
+            if(QDir(getCurrentFile()).isEmpty())
+                removeCurrentDirectory();
             }
         }
 

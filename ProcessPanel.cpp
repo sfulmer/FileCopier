@@ -1,8 +1,10 @@
 #include "FileCopierController.h"
 #include "ProcessPanel.h"
+#include "ProgressObserver.h"
 #include <QVBoxLayout>
 
 using net::draconia::FileCopier::FileCopierController;
+using net::draconia::FileCopier::observers::ProgressObserver;
 using namespace net::draconia::FileCopier::ui;
 
 void ProcessPanel::initControls()
@@ -33,6 +35,8 @@ ProcessPanel::ProcessPanel(QWidget *parent, SetupModel &refSetupModel)
     ,   mBarProgress(nullptr)
     ,   mRefSetupModel(refSetupModel)
 {
+    getProcessModel().addObserver(new ProgressObserver(getProgressBar()));
+
     initPanel();
 }
 
@@ -60,7 +64,14 @@ ProcessModel &ProcessPanel::getProcessModel()
 QProgressBar *ProcessPanel::getProgressBar()
 {
     if(mBarProgress == nullptr)
+        {
         mBarProgress = new QProgressBar(this);
+
+        mBarProgress->setMaximum(100);
+        mBarProgress->setMinimum(0);
+        mBarProgress->setTextVisible(true);
+        mBarProgress->setAlignment(Qt::AlignCenter);
+        }
 
     return(mBarProgress);
 }

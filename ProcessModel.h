@@ -65,8 +65,8 @@ namespace net
                     ofstream &getOutputFile();
                     bool isDirectoryEmptyForFile(const QString &sFile) const;
                     void moveFile(const QString sSource, const QString sTarget);
-                    void removeDirectory(const QString sDirectory);
-                    void removeFile(const QString &sFile);
+                    void removeCurrentDirectory();
+                    void removeCurrentFile();
                     void setBufferReadSize(const int iBufferReadSize);
                     void setBufferSize(const int iBufferSize);
                     void setCurrentBytesMoved(const qint64 iCurrentBytesMoved);
