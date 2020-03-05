@@ -309,6 +309,11 @@ bool ProcessModel::isPaused() const
     return(getStatus() == Status::PAUSED);
 }
 
+bool ProcessModel::isSetup() const
+{
+    return(getStatus() == Status::SETUP);
+}
+
 bool ProcessModel::isStalled() const
 {
     return(getStatus() == Status::STALLED);

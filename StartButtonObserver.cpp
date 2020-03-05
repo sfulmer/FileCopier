@@ -1,6 +1,10 @@
+#include "FileCopierController.h"
+#include "ProcessModel.h"
 #include "SetupModel.h"
 #include "StartButtonObserver.h"
 
+using net::draconia::FileCopier::FileCopierController;
+using net::draconia::FileCopier::model::ProcessModel;
 using net::draconia::FileCopier::model::SetupModel;
 using namespace net::draconia::FileCopier::observers;
 
@@ -16,13 +20,35 @@ StartButtonObserver::StartButtonObserver(QPushButton *btnStart)
 
 void StartButtonObserver::update(const Observable &objObservable, const QString &sProperty)
 {
-    Q_UNUSED(sProperty);
+    if((sProperty == "SourcePanel") || (sProperty == "TargetPanel") || (sProperty == "Status"))
+        {
+        QString sTargetFilename;
+        ProcessModel *ptrProcessModel;
+        SetupModel *ptrSetupModel;
 
-    QString sTargetFilename;
-    SetupModel &refModel = static_cast<SetupModel &>(const_cast<Observable &>(objObservable));
+        if((sProperty == "SourcePanel") || (sProperty == "TargetPanel"))
+            {
+            ptrSetupModel = &static_cast<SetupModel &>(const_cast<Observable &>(objObservable));
+            ptrProcessModel = &(ptrSetupModel->getController().getProcessModel());
+            }
+        else if(sProperty == "Status")
+            {
+            ptrProcessModel = &static_cast<ProcessModel &>(const_cast<Observable &>(objObservable));
+            ptrSetupModel = &(ptrProcessModel->getController().getSetupModel());
+            }
+        else
+            {
+            ptrProcessModel = nullptr;
+            ptrSetupModel = nullptr;
+            }
 
-    sTargetFilename = refModel.getTargetPanelModel().getPath() + refModel.getTargetPanelModel().getFilename();
+        if(!(ptrSetupModel == nullptr) || (ptrProcessModel == nullptr))
+            {
+            sTargetFilename = ptrSetupModel->getTargetPanelModel().getPath() + ptrSetupModel->getTargetPanelModel().getFilename();
 
-    getStartButton()->setEnabled(   (!refModel.getSourcePanelModel().getSourceFile().isEmpty())
-                                &&  (!sTargetFilename.isEmpty()));
+            getStartButton()->setEnabled(   (!ptrSetupModel->getSourcePanelModel().getSourceFile().isEmpty())
+                                        &&  (!sTargetFilename.isEmpty())
+                                        &&  (!(ptrProcessModel->isDone() || ptrProcessModel->isSetup())));
+            }
+        }
 }

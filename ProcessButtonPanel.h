@@ -24,6 +24,8 @@ namespace net
                 protected:
                     void initControls();
                     void initPanel();
+
+                    void pauseResumeProcess();
                 public:
                     ProcessButtonPanel(QWidget *parent, const ProcessModel &refModel);
 

@@ -32,6 +32,7 @@ SetupButtonPanel::SetupButtonPanel(QWidget *parent, FileCopierController &refCon
     ,   mRefController(refController)
     ,   mBtnStart(nullptr)
 {
+    getController().getProcessModel().addObserver(new StartButtonObserver(getStartButton()));
     getController().getSetupModel().addObserver(new StartButtonObserver(getStartButton()));
 
     initPanel();

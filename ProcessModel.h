@@ -90,6 +90,7 @@ namespace net
                     bool isDone() const;
                     bool isMoving() const;
                     bool isPaused() const;
+                    bool isSetup() const;
                     bool isStalled() const;
                     void pause();
                     void resume();
