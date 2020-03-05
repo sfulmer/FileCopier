@@ -36,6 +36,7 @@ SOURCES += \
     SourcePanelModel.cpp \
     SourcePanelObserver.cpp \
     StartButtonObserver.cpp \
+    StatusDoneObserver.cpp \
     TargetPanel.cpp \
     TargetPanelModel.cpp \
     TargetPanelObserver.cpp \
@@ -64,6 +65,7 @@ HEADERS += \
     SourcePanelModel.h \
     SourcePanelObserver.h \
     StartButtonObserver.h \
+    StatusDoneObserver.h \
     TargetPanel.h \
     TargetPanelModel.h \
     TargetPanelObserver.h

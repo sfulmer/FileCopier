@@ -3,11 +3,13 @@
 #include <iostream>
 #include <QDir>
 #include <QFileInfo>
+#include "StatusDoneObserver.h"
 
 using net::draconia::FileCopierApp;
 using namespace net::draconia::FileCopier;
 using net::draconia::FileCopier::model::ProcessModel;
 using net::draconia::FileCopier::model::SetupModel;
+using net::draconia::FileCopier::observers::StatusDoneObserver;
 using namespace std;
 
 QList<QString> FileCopierController::collectListOfFilesToMove(const QString &sDir)
@@ -52,7 +54,9 @@ FileCopierController::FileCopierController(FileCopierApp &refApp)
     ,   mRefApp(refApp)
     ,   mObjProcessModel(*this)
     ,   mObjSetupModel(*this)
-{ }
+{
+    getProcessModel().addObserver(new StatusDoneObserver());
+}
 
 SetupModel &FileCopierController::getSetupModel() const
 {

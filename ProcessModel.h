@@ -9,7 +9,6 @@
 using namespace net::draconia::util;
 using namespace std;
 
-
 namespace net
 {
     namespace draconia
@@ -88,6 +87,7 @@ namespace net
                     const QList<QString> &getFilesToMove() const;
                     Status &getStatus() const;
                     qint64 getTotalBytesToMove();
+                    bool isDone() const;
                     bool isMoving() const;
                     bool isPaused() const;
                     bool isStalled() const;

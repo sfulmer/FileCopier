@@ -142,9 +142,6 @@ void ProcessModel::moveFile(const QString sSource, const QString sTarget)
         if(getInputFile().eof() && getInputFile())
            {
            getInputFile().close();
-           removeFile(getCurrentFile());
-
-           //TODO Put code to remove directory of current file if empty after deletion
 
            setCurrentPosition(0);
            }
@@ -297,6 +294,11 @@ qint64 ProcessModel::getTotalBytesToMove()
     return(miTotalBytesToMove);
 }
 
+bool ProcessModel::isDone() const
+{
+    return(getStatus() == Status::DONE);
+}
+
 bool ProcessModel::isMoving() const
 {
     return(getStatus() == Status::MOVING);
@@ -314,7 +316,42 @@ bool ProcessModel::isStalled() const
 
 void ProcessModel::pause()
 {
-    //TODO Do stuff to set status to PAUSE
+    setStatus(Status::PAUSED);
+}
+
+void ProcessModel::resume()
+{
+    // Changes the displayed Status
+    setStatus(Status::MOVING);
+
+    // Iterates the Files
+    for(QString sFile : getFilesToMove())
+        {
+        QCoreApplication::processEvents();
+
+        // Get the File Info
+        QFileInfo fileInfo(sFile);
+
+        // Calculate the target file and path
+        QString sTargetFileAndPath = getController().getSetupModel().getTargetPanelModel().getPath() + fileInfo.fileName();
+
+        // Move the file from the source filename and path to the target filename and path
+        moveFile(sFile, sTargetFileAndPath);
+
+        QCoreApplication::processEvents();
+
+        if(isMoving())
+            {
+            removeFile(getCurrentFile());
+            QCoreApplication::processEvents();
+            //TODO Put code to remove directory of current file if empty after deletion
+            }
+        }
+
+    QCoreApplication::processEvents();
+
+    if(getFilesToMove().isEmpty())
+        setStatus(Status::DONE);
 }
 
 void ProcessModel::setFilesToMove(const QList<QString> &lstFiles)
@@ -331,21 +368,9 @@ void ProcessModel::start()
     // Sets up the Progress Bar
     setTotalBytesToMove(0);
 
-    // Changes the displayed Status
-    setStatus(Status::COPYING);
+    // Sets the initial File Position
+    setCurrentPosition(0);
 
-    // Iterates the Files
-    for(QString sFile : getFilesToMove())
-        {
-        // Get the File Info
-        QFileInfo fileInfo(sFile);
-        // Calculate the target file and path
-        QString sTargetFileAndPath = getController().getSetupModel().getTargetPanelModel().getPath() + fileInfo.fileName();
-
-        moveFile(sFile, sTargetFileAndPath);
-
-        QCoreApplication::processEvents();
-        }
-
-    setStatus(Status::DONE);
+    // The same events will happen with resume from here on out
+    resume();
 }
