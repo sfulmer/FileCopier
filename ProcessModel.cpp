@@ -368,6 +368,8 @@ void ProcessModel::resume()
 
             if(QDir(getCurrentFile()).isEmpty())
                 removeCurrentDirectory();
+
+            mLstFiles.removeOne(sFile);
             }
         }
 

@@ -1,6 +1,8 @@
+#include "ProcessCurrentFileObserver.h"
 #include "ProcessFilenamePanel.h"
 #include <QHBoxLayout>
 
+using net::draconia::FileCopier::observers::ProcessCurrentFileObserver;
 using namespace net::draconia::FileCopier::ui;
 
 void ProcessFilenamePanel::initControls()
@@ -26,6 +28,8 @@ ProcessFilenamePanel::ProcessFilenamePanel(QWidget *parent, const ProcessModel &
     ,   mLblFile(nullptr)
     ,   mLblFilename(nullptr)
 {
+    getProcessModel().addObserver(new ProcessCurrentFileObserver(getFilenameLabel()));
+
     initPanel();
 }
 

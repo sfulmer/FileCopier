@@ -23,6 +23,7 @@ SOURCES += \
     FileCopierMainPanel.cpp \
     Observer.cpp \
     ProcessButtonPanel.cpp \
+    ProcessCurrentFileObserver.cpp \
     ProcessFilenamePanel.cpp \
     ProcessModel.cpp \
     ProcessPanel.cpp \
@@ -54,6 +55,7 @@ HEADERS += \
     FileCopierMainWindow.h \
     Observer.h \
     ProcessButtonPanel.h \
+    ProcessCurrentFileObserver.h \
     ProcessFilenamePanel.h \
     ProcessModel.h \
     ProcessPanel.h \
