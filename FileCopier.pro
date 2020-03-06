@@ -30,6 +30,7 @@ SOURCES += \
     ProcessStatusObserver.cpp \
     ProcessStatusPanel.cpp \
     ProgressObserver.cpp \
+    PropertyFileIO.cpp \
     ResumeFromLastPositionObserver.cpp \
     SetupButtonPanel.cpp \
     SetupModel.cpp \
@@ -62,6 +63,7 @@ HEADERS += \
     ProcessStatusObserver.h \
     ProcessStatusPanel.h \
     ProgressObserver.h \
+    PropertyFileIO.h \
     ResumeFromLastPositionObserver.h \
     SetupButtonPanel.h \
     SetupModel.h \
@@ -83,3 +85,6 @@ TRANSLATIONS += \
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+DISTFILES += \
+    Config.properties

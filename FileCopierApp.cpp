@@ -2,9 +2,9 @@
 
 using namespace net::draconia;
 
-FileCopierApp::RunningState FileCopierApp::getRunningState() const
+PropertyFileIO FileCopierApp::getPropertyFile()
 {
-    return(meRunningState);
+    return(mFileProperties);
 }
 
 void FileCopierApp::setArguments(int argc, char *argv[])
@@ -46,4 +46,15 @@ FileCopierController &FileCopierApp::getController()
 FileCopierMainWindow &FileCopierApp::getMainWindow()
 {
     return(mWndMain);
+}
+
+QList<Property> &FileCopierApp::getProperties()
+{
+    if(getPropertyFile().getPropertyList().isEmpty())
+        if(getPropertyFile().getFilename().isEmpty())
+            return(getPropertyFile().load("Config.properties"));
+        else
+            return(getPropertyFile().load());
+    else
+        return(const_cast<QList<Property> &>(getPropertyFile().getPropertyList()));
 }

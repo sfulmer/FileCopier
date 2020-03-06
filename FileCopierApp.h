@@ -2,11 +2,14 @@
 
 #include "FileCopierController.h"
 #include "FileCopierMainWindow.h"
+#include "PropertyFileIO.h"
 #include <QApplication>
 #include <QList>
 
 using net::draconia::FileCopier::FileCopierController;
 using net::draconia::FileCopier::ui::FileCopierMainWindow;
+using net::draconia::io::Property;
+using net::draconia::io::PropertyFileIO;
 
 namespace net
 {
@@ -14,17 +17,12 @@ namespace net
     {
         class FileCopierApp : public QApplication
         {
-            enum RunningState
-            {   Started
-            ,   Stopped
-            ,   Error
-            } meRunningState;
-
             FileCopierController mObjController;
             FileCopierMainWindow mWndMain;
+            PropertyFileIO mFileProperties;
             QList<QString> mLstArgs;
         protected:
-            RunningState getRunningState() const;
+            PropertyFileIO &getPropertyFile() const;
             void setArguments(int argc, char *argv[]);
             void showMainWindow();
         public:
@@ -35,6 +33,7 @@ namespace net
             QList<QString> &getArguments() const;
             FileCopierController &getController();
             FileCopierMainWindow &getMainWindow();
+            QList<Property> &getProperties();
             void start();
         };
     }
