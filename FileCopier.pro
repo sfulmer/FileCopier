@@ -30,6 +30,8 @@ SOURCES += \
     ProcessStatusObserver.cpp \
     ProcessStatusPanel.cpp \
     ProgressObserver.cpp \
+    Properties.cpp \
+    Property.cpp \
     PropertyFileIO.cpp \
     ResumeFromLastPositionObserver.cpp \
     SetupButtonPanel.cpp \
@@ -63,6 +65,8 @@ HEADERS += \
     ProcessStatusObserver.h \
     ProcessStatusPanel.h \
     ProgressObserver.h \
+    Properties.h \
+    Property.h \
     PropertyFileIO.h \
     ResumeFromLastPositionObserver.h \
     SetupButtonPanel.h \
