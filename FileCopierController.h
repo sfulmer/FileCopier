@@ -1,9 +1,12 @@
 #pragma once
 
 #include "ProcessModel.h"
+#include "Setable.h"
 #include "SetupModel.h"
 
 using namespace net::draconia::FileCopier::model;
+using net::draconia::util::Properties;
+using net::draconia::util::Setable;
 
 namespace net
 {
@@ -13,7 +16,7 @@ namespace net
 
         namespace FileCopier
         {
-            class FileCopierController
+            class FileCopierController : public Setable
             {
                 bool mbNormalExit;
                 FileCopierApp &mRefApp;
@@ -34,6 +37,7 @@ namespace net
                 bool isNormalExit() const;
                 void pauseProcess();
                 void resumeProcess();
+                virtual void setUp(const Properties &refProperties);
                 void startProcess();
             };
         }

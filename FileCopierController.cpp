@@ -82,12 +82,34 @@ bool FileCopierController::isNormalExit() const
 
 void FileCopierController::pauseProcess()
 {
-    // TODO Put code in here
+    getProcessModel().pause();
 }
 
 void FileCopierController::resumeProcess()
 {
-    //TODO Put code in here
+    getProcessModel().resume();
+}
+
+void FileCopierController::setUp(const Properties &refProperties)
+{
+    Properties objSetupProperties;
+
+    for(Property objProperty : refProperties)
+        {
+        QString sDividerKey, sNewKey, sValue;
+        QStringList sPropertyKeyParts = objProperty.getKey().split(".");
+
+        sDividerKey = sPropertyKeyParts[0];
+        sPropertyKeyParts.removeAt(0);
+        sNewKey = sPropertyKeyParts.join(".");
+        sValue = objProperty.getValue();
+
+        if(sDividerKey.toUpper() == "SETUP")
+            objSetupProperties.add(Property(sNewKey, sValue));
+        }
+
+    getSetupModel().setUp(objSetupProperties);
+
 }
 
 void FileCopierController::startProcess()

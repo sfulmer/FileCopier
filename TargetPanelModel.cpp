@@ -2,6 +2,11 @@
 
 using namespace net::draconia::FileCopier::model;
 
+Properties TargetPanelModel::prefixWithDividerKey(const Properties &refProperties)
+{
+    return(refProperties);
+}
+
 TargetPanelModel::TargetPanelModel()
     :   Observable()
 { }
@@ -28,6 +33,16 @@ QString &TargetPanelModel::getPath() const
     return(const_cast<QString &>(msTargetPath));
 }
 
+Properties TargetPanelModel::pullSettingsToProperties()
+{
+    Properties objProperties;
+
+    objProperties.add(Property("Target.Filename", getFilename()));
+    objProperties.add(Property("Target.Path", getPath()));
+
+    return(objProperties);
+}
+
 void TargetPanelModel::setFilename(const QString &sFilename)
 {
     msTargetFilename = sFilename;
@@ -42,4 +57,17 @@ void TargetPanelModel::setPath(const QString &sPath)
 
     setChanged();
     notifyObservers("Path");
+}
+
+void TargetPanelModel::setUp(const Properties &refProperties)
+{
+    for(Property objProperty : refProperties)
+        {
+        QString sUpperKey = objProperty.getKey().toUpper();
+
+        if(sUpperKey == "FILENAME")
+            setFilename(objProperty.getValue());
+        else if(sUpperKey == "PATH")
+            setPath(objProperty.getValue());
+        }
 }

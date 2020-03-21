@@ -1,10 +1,12 @@
 #include "FileCopierApp.h"
+#include "PropertyFileIO.h"
 
 using namespace net::draconia;
+using net::draconia::io::PropertyFileIO;
 
-PropertyFileIO FileCopierApp::getPropertyFile()
+void FileCopierApp::propogatePropertiesToSettings()
 {
-    return(mFileProperties);
+    getController().setUp(getProperties());
 }
 
 void FileCopierApp::setArguments(int argc, char *argv[])
@@ -28,6 +30,8 @@ FileCopierApp::FileCopierApp(int argc, char *argv[])
 
 int FileCopierApp::exec()
 {
+    propogatePropertiesToSettings();
+
     showMainWindow();
 
     return(QApplication::exec());
@@ -48,13 +52,10 @@ FileCopierMainWindow &FileCopierApp::getMainWindow()
     return(mWndMain);
 }
 
-QList<Property> &FileCopierApp::getProperties()
+Properties &FileCopierApp::getProperties()
 {
-    if(getPropertyFile().getPropertyList().isEmpty())
-        if(getPropertyFile().getFilename().isEmpty())
-            return(getPropertyFile().load("Config.properties"));
-        else
-            return(getPropertyFile().load());
+    if(mObjProperties.isEmpty())
+        return(mObjProperties = PropertyFileIO().load("Config.properties"));
     else
-        return(const_cast<QList<Property> &>(getPropertyFile().getPropertyList()));
+        return(mObjProperties);
 }

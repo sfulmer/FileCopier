@@ -3,6 +3,11 @@
 
 using namespace net::draconia::FileCopier::model;
 
+Properties SourcePanelModel::prefixWithDividerKey(const Properties &refProperties)
+{
+    return(refProperties);
+}
+
 void SourcePanelModel::setDirectory(const bool bDirectory)
 {
     mbDirectory = bDirectory;
@@ -38,10 +43,26 @@ bool SourcePanelModel::isDirectory() const
     return(mbDirectory);
 }
 
+Properties SourcePanelModel::pullSettingsToProperties()
+{
+    Properties objProperties;
+
+    objProperties.add(Property("Source.SourceFile", getSourceFile()));
+
+    return(objProperties);
+}
+
 void SourcePanelModel::setSourceFile(const QString sPath)
 {
     msSourceFile = sPath;
 
     setChanged();
     notifyObservers("SourceFile");
+}
+
+void SourcePanelModel::setUp(const Properties &refProperties)
+{
+    for(Property objProperty : refProperties)
+        if(objProperty.getKey().toUpper() == "SOURCEFILE")
+            setSourceFile(objProperty.getValue());
 }

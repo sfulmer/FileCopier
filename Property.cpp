@@ -1,4 +1,5 @@
 #include "Property.h"
+#include <QStringList>
 
 using namespace net::draconia::util;
 
@@ -22,12 +23,12 @@ Property::Property(Property &refToMove)
 
 QString &Property::getKey() const
 {
-    return(msKey);
+    return(const_cast<QString &>(msKey));
 }
 
 QString &Property::getValue() const
 {
-    return(msValue);
+    return(const_cast<QString &>(msValue));
 }
 
 void Property::setKey(const QString &sKey)

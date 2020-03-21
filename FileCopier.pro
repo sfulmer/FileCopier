@@ -22,6 +22,7 @@ SOURCES += \
     FileCopierController.cpp \
     FileCopierMainPanel.cpp \
     Observer.cpp \
+    Persistable.cpp \
     ProcessButtonPanel.cpp \
     ProcessCurrentFileObserver.cpp \
     ProcessFilenamePanel.cpp \
@@ -34,6 +35,8 @@ SOURCES += \
     Property.cpp \
     PropertyFileIO.cpp \
     ResumeFromLastPositionObserver.cpp \
+    Setable.cpp \
+    SettingsPersistenceObserver.cpp \
     SetupButtonPanel.cpp \
     SetupModel.cpp \
     SetupPanel.cpp \
@@ -57,6 +60,7 @@ HEADERS += \
     FileCopierMainPanel.h \
     FileCopierMainWindow.h \
     Observer.h \
+    Persistable.h \
     ProcessButtonPanel.h \
     ProcessCurrentFileObserver.h \
     ProcessFilenamePanel.h \
@@ -69,6 +73,8 @@ HEADERS += \
     Property.h \
     PropertyFileIO.h \
     ResumeFromLastPositionObserver.h \
+    Setable.h \
+    SettingsPersistenceObserver.h \
     SetupButtonPanel.h \
     SetupModel.h \
     SetupPanel.h \

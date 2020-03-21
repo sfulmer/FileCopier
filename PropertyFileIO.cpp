@@ -1,77 +1,52 @@
+#include "Property.h"
 #include "PropertyFileIO.h"
+#include <QFile>
 
 using namespace net::draconia::io;
-
-
+using net::draconia::util::Property;
+using net::draconia::util::Properties;
 
 fstream &PropertyFileIO::getPropertiesFile()
 {
-    return(mFileProperties);
-}
+    if(mFileProperties == nullptr)
+        mFileProperties = new fstream(getFilename().toStdString());
 
-QList<Property> &PropertyFileIO::getPropertyListInternal() const
-{
-    return(const_cast<QList<Property> &>(mLstProperties));
+    return(*mFileProperties);
 }
 
 PropertyFileIO::PropertyFileIO()
+    :   mFileProperties(nullptr)
 { }
 
 PropertyFileIO::PropertyFileIO(const QString &sFilename)
-    :   msFilename(sFilename)
-{ }
-
-PropertyFileIO::PropertyFileIO(const PropertyFileIO &refCopy)
-    :   mLstProperties(refCopy.getPropertyList())
-    ,   msFilename(refCopy.getFilename())
+    :   mFileProperties(nullptr)
+    ,   msFilename(sFilename)
 { }
 
 PropertyFileIO::PropertyFileIO(PropertyFileIO &refToMove)
-    :   mLstProperties(refToMove.getPropertyList())
+    :   mFileProperties(&(refToMove.getPropertiesFile()))
     ,   msFilename(refToMove.getFilename())
-{ }
+{
+    refToMove.msFilename = nullptr;
+}
 
 PropertyFileIO::~PropertyFileIO()
 {
     if(getPropertiesFile().is_open())
+        {
         getPropertiesFile().close();
-}
 
-PropertyFileIO &PropertyFileIO::operator=(const PropertyFileIO &refToMoveAssign)
-{
-    setFilename(refToMoveAssign.getFilename());
-
-    for(Property objProperty : refToMoveAssign.getPropertyList())
-        getPropertyListInternal().append(objProperty);
-
-    return(*this);
+        delete mFileProperties;
+        mFileProperties = nullptr;
+        }
 }
 
 PropertyFileIO &PropertyFileIO::operator=(PropertyFileIO &refToMoveAssign)
 {
     setFilename(refToMoveAssign.getFilename());
 
-    for(Property objProperty : refToMoveAssign.getPropertyList())
-        getPropertyListInternal().append(objProperty);
-
-    return(*this);
-}
-
-PropertyFileIO &PropertyFileIO::addProperty(const QString sKey, const QString &sValue)
-{
-    return(addProperty(Property(sKey, sValue)));
-}
-
-PropertyFileIO &PropertyFileIO::addProperty(const Property &refProperty)
-{
-    getPropertyListInternal().append(refProperty);
-
-    return(*this);
-}
-
-PropertyFileIO &PropertyFileIO::addProperty(Property &refProperty)
-{
-    getPropertyListInternal().append(refProperty);
+    mFileProperties = refToMoveAssign.mFileProperties;
+    refToMoveAssign.mFileProperties = nullptr;
 
     return(*this);
 }
@@ -81,56 +56,53 @@ QString &PropertyFileIO::getFilename() const
     return(const_cast<QString &>(msFilename));
 }
 
-const QList<Property> &PropertyFileIO::getPropertyList() const
-{
-    return(getPropertyListInternal());
-}
-
-QList<Property> &PropertyFileIO::load()
+Properties PropertyFileIO::load()
 {
     return(load(getFilename()));
 }
 
-QList<Property> &PropertyFileIO::load(const QString &sFilename)
+Properties PropertyFileIO::load(const QString &sFilename)
 {
+    bool bFileExists = false;
+    Properties objProperties;
+
     if(getPropertiesFile().is_open())
         getPropertiesFile().close();
 
+    // Test for existence of Properties file
     if(sFilename.isEmpty())
-        getPropertiesFile().open(getFilename().toStdString(), fstream::in);
+        bFileExists = QFile(getFilename()).exists();
     else
-        getPropertiesFile().open(sFilename.toStdString(), fstream::in);
+        bFileExists = QFile(sFilename).exists();
 
-    while(!getPropertiesFile().eof())
+    if(bFileExists)
         {
-        char sProperty[120];
+        if(sFilename.isEmpty())
+            getPropertiesFile().open(getFilename().toStdString(), fstream::in);
+        else
+            getPropertiesFile().open(sFilename.toStdString(), fstream::in);
 
-        getPropertiesFile().getline(sProperty, 120);
+        while(!getPropertiesFile().eof())
+            {
+            char sProperty[120];
 
-        getPropertyListInternal().append(Property::parse(sProperty));
+            getPropertiesFile().getline(sProperty, 120);
+
+            objProperties.add(Property::parse(sProperty));
+            }
+
+        getPropertiesFile().close();
         }
 
-    getPropertiesFile().close();
-
-    return(getPropertyListInternal());
+    return(objProperties);
 }
 
-void PropertyFileIO::save()
+void PropertyFileIO::save(const Properties &refProperties)
 {
-    save(getPropertyListInternal());
+    save(refProperties, getFilename());
 }
 
-void PropertyFileIO::save(const QString &sFilename)
-{
-    save(getPropertyListInternal(), sFilename);
-}
-
-void PropertyFileIO::save(const QList<Property> &lstProperties)
-{
-    save(lstProperties, getFilename());
-}
-
-void PropertyFileIO::save(const QList<Property> &lstProperties, const QString &sFilename)
+void PropertyFileIO::save(const Properties &refProperties, const QString &sFilename)
 {
     if(getPropertiesFile().is_open())
         getPropertiesFile().close();
@@ -140,7 +112,7 @@ void PropertyFileIO::save(const QList<Property> &lstProperties, const QString &s
     else
         getPropertiesFile().open(sFilename.toStdString(), fstream::out);
 
-    for(Property objProperty : lstProperties)
+    for(Property objProperty : refProperties)
         {
         QString sProperty = objProperty.toString();
 

@@ -5,6 +5,16 @@ using net::draconia::FileCopier::FileCopierController;
 using namespace net::draconia::FileCopier::model;
 using namespace net::draconia::util;
 
+Properties SetupModel::prefixWithDividerKey(const Properties &refProperties)
+{
+    Properties objReturn;
+
+    for(Property objProperty : refProperties)
+        objReturn.add(Property("Setup." + objProperty.getKey(), objProperty.getValue()));
+
+    return(objReturn);
+}
+
 SetupModel::SetupModel(FileCopierController &refController)
     :   Observable()
     ,   mbExitWhenDone(true)
@@ -64,6 +74,18 @@ TargetPanelModel &SetupModel::getTargetPanelModel() const
     return(const_cast<TargetPanelModel &>(mObjTargetPanelModel));
 }
 
+Properties SetupModel::pullSettingsToProperties()
+{
+    Properties objProperties;
+
+    objProperties.add(prefixWithDividerKey(getSourcePanelModel().pullSettingsToProperties()));
+    objProperties.add(prefixWithDividerKey(getTargetPanelModel().pullSettingsToProperties()));
+    objProperties.add(Property("Setup.ExitWhenDone", getExitWhenDone() ? "True" : "False"));
+    objProperties.add(Property("Setup.ResumeFromLastPosition", getResumeFromLastPosition() ? "True" : "False"));
+
+    return(objProperties);
+}
+
 void SetupModel::setExitWhenDone(const bool bExitWhenDone)
 {
     mbExitWhenDone = bExitWhenDone;
@@ -78,6 +100,34 @@ void SetupModel::setResumeFromLastPosition(const bool bResumeFromLastPosition)
 
     setChanged();
     notifyObservers("ResumeFromLastPosition");
+}
+
+void SetupModel::setUp(const Properties &refProperties)
+{
+    Properties objSourceProperties, objTargetProperties;
+
+    for(Property objProperty : refProperties)
+        {
+        QString sDividerKey, sNewKey, sValue;
+        QStringList sPropertyKeyParts = objProperty.getKey().split(".");
+
+        sDividerKey = sPropertyKeyParts[0];
+        sPropertyKeyParts.removeAt(0);
+        sNewKey = sPropertyKeyParts.join(".");
+        sValue = objProperty.getValue();
+
+        if(sDividerKey.toUpper() == "SOURCE")
+            objSourceProperties.add(Property(sNewKey, sValue));
+        else if(sDividerKey.toUpper() == "TARGET")
+            objTargetProperties.add(Property(sNewKey, sValue));
+        else if(sDividerKey.toUpper() == "EXITWHENDONE")
+            setExitWhenDone(objProperty.getValue().toUpper() == "TRUE");
+        else if(sDividerKey.toUpper() == "RESUMEFROMLASTPOSITION")
+            setResumeFromLastPosition(objProperty.getValue().toUpper() == "TRUE");
+        }
+
+    getSourcePanelModel().setUp(objSourceProperties);
+    getTargetPanelModel().setUp(objTargetProperties);
 }
 
 void SetupModel::update(const Observable &objObservable, const QString &sProperty)

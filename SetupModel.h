@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Persistable.h"
+#include "Setable.h"
 #include "SourcePanelModel.h"
 #include "TargetPanelModel.h"
 
@@ -15,12 +17,14 @@ namespace net
 
             namespace model
             {
-                class SetupModel : public Observable, public Observer
+                class SetupModel : public Observable, public Observer, public Persistable, public Setable
                 {
                     bool mbExitWhenDone, mbResumeFromLastPosition;
                     FileCopierController &mRefController;
                     SourcePanelModel mObjSourcePanelModel;
                     TargetPanelModel mObjTargetPanelModel;
+                protected:
+                    virtual Properties prefixWithDividerKey(const Properties &refProperties);
                 public:
                     SetupModel(FileCopierController &refController);
                     SetupModel(FileCopierController &refController, const SourcePanelModel &refSourceModel, const TargetPanelModel &refTargetModel);
@@ -31,8 +35,10 @@ namespace net
                     bool getResumeFromLastPosition() const;
                     SourcePanelModel &getSourcePanelModel() const;
                     TargetPanelModel &getTargetPanelModel() const;
+                    virtual Properties pullSettingsToProperties();
                     void setExitWhenDone(const bool bExitWhenDone);
                     void setResumeFromLastPosition(const bool bRestartFromLastPosition);
+                    virtual void setUp(const Properties &refProperties);
                     virtual void update(const Observable &objObservable, const QString &sProperty);
                 };
             }
